@@ -65,8 +65,8 @@ Bi = Bi(:,keep_el);
 Di = Di(:,keep_el);
 
 % Add b_clutch1*wf1 and b_clutch2*wf2 to states
-Ai(del_el(1),del_el(1)) = Ai(del_el(1),del_el(1)) + b_clutch1;
-Ai(del_el(2),del_el(2)) = Ai(del_el(2),del_el(2)) + b_clutch2;
+Ai(del_el(1),del_el(1)) = Ai(del_el(1),del_el(1)) - b_clutch1;
+Ai(del_el(2),del_el(2)) = Ai(del_el(2),del_el(2)) - b_clutch2;
 
 
 % POG state space equations
@@ -79,10 +79,10 @@ disp(Ci*x_init + Di*u)
 %% Reduced system
 
 % POG congruent transformation when K -> infinite
-x = [wi,w1,w2].';     % new (reduced) state vector
+x = [wc,w1,w2].';     % new (reduced) state vector
 eqn = R*x_init(1:length(u_init));
-Sol = solve(eqn==0, [wc, wp1, wf1, wp2, wf2]);
-Tx = equationsToMatrix([wi,Sol.wc,Sol.wp1,Sol.wf1,w1,Sol.wp2,Sol.wf2,w2,...
+Sol = solve(eqn==0, [wi, wp1, wf1, wp2, wf2]);
+Tx = equationsToMatrix([Sol.wi,wc,Sol.wp1,Sol.wf1,w1,Sol.wp2,Sol.wf2,w2,...
                         0,0,0,0,0], x);
 
 % Reduced POG state space model
@@ -93,7 +93,7 @@ C = simplify(Ci*Tx);
 D = Di;                     % not affected
 
 % Reduced POG state space equations
-fprintf('\n\nx_dot = \n')
+fprintf('\n\nL*x_dot = \n')
 disp(simplify(A*x + B*u))
 fprintf('\n\ny = \n')
 disp(simplify(C*x + D*u))
