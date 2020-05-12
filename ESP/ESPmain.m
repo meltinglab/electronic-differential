@@ -1,7 +1,10 @@
 global m rho S g rxf rxr ryf rz r Iz
 global Cx0 Cyb CR rk
 global delta omega
-global Klqr xeq
+global tmin tmax
+global Klqr xeq CL ICE
+%CL is used to control the closing of the loop
+%ICE is used to identify a simulation on an icy road
 
 %% Variables definition
 
@@ -96,3 +99,29 @@ end
 disp('LINEAR EQUIIBRIUM POINT')
 disp(['Slip angle beta = ',num2str(xeq(1)*180/pi),' degrees'])
 disp(['Yaw rate omega = ',num2str(xeq(2)*180/pi),' degrees per seconds'])
+
+%% System and Control
+
+Q = inv(2*diag([(0.2/180*pi)^2 (1/180*pi)^2]));
+R = inv(4*eye(4)*(40*(2*pi)/60)^2);
+
+[Klqr,Sinfty,eigACL] = lqr(A,B2,Q,R);
+
+disp('- LQR GAIN');
+disp(-Klqr);
+ 
+beta0 = xeq(1); 
+w0 = xeq(2);
+
+%% Open Loop simulation
+
+tspan = [0 10];
+tmin = max(tspan)/3 -1;
+tmax = max(tspan)/3 +1;
+options = odeset('MaxStep',0.01);
+
+CL = 0;
+ICE = 0;
+[t,y] = ode23(@ESPSIMv1,tspan,[x0; y0; V; beta0; w0; psi0],options);
+ICE = 1;
+[tICE,yICE] = ode23(@ESPSIMv1,tspan,[x0; y0; V; beta0; w0; psi0],options);
