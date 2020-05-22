@@ -1,4 +1,5 @@
-function dx = ESPSIM(t,x)
+function dx = ESPSIM(t,x) %returns the derivative of x at time instant t
+%All the parameters must be set
 
 global m rho S g rxf rxr ryf rz r Iz
 global Cx0 Cyb CR rk
@@ -21,28 +22,31 @@ psi = x(6);
 
 FaB = 1/2*rho*S*V^2*[Cx0; Cyb*beta];
 
-tauBi = zeros(1,4);
-muBi = zeros(2,4);
+tauBi = zeros(1,4); %torque on the wheels
+muBi = zeros(2,4); %vertical force coefficients
 
+%Closed loop control
 if CL == 1
     u = -Klqr*(x(4:5)-xeq);
 end
 
+%Forces on the 4 wheels
 for i = 1:4
-    deltai = delta(i);
-    ryi = ry(i);
-    rxi = rx(i);
-    VWi = [cos(deltai), sin(deltai); -sin(deltai), cos(deltai)]*(w*[-ryi; rxi]+V*[cos(beta); sin(beta)]);
-    Vxi = VWi(1);
-    Vyi = VWi(2);
+    deltai = delta(i); %wheel rotation
+    ryi = ry(i); %wheel y position
+    rxi = rx(i); %wheel x position
+    VWi = [cos(deltai), sin(deltai); -sin(deltai), cos(deltai)]*(w*[-ryi; rxi]+V*[cos(beta); sin(beta)]); %wheel speed
+    Vxi = VWi(1); %wheel speed along x
+    Vyi = VWi(2); %wheel speed along y
     
-    if i == 1 || i == 2
+    if i == 1 || i == 2 %front wheels
         wi = omega(i);
     end
-    if i == 3 || i ==4
+    if i == 3 || i ==4 %rear wheels
         wi = Vxi/r;
     end
     
+    %Apply control
     if CL == 1
         wi = wi+ u(i);
         
@@ -56,7 +60,7 @@ for i = 1:4
             else
                 r_wr=roots([1 -Vxi -Vyi^2]);
             end
-            wr = max(r_wr);
+            wr = max(r_wr); %reference speed
             if wi > wr/r
                 wi = wr/r;
             end
@@ -71,7 +75,7 @@ for i = 1:4
             else
                 r_wr=Vxi;
             end
-            wr = min(r_wr);
+            wr = min(r_wr); %reference speed
             if wi < wr/r
                 wi = wr/r;
             end
@@ -83,26 +87,30 @@ for i = 1:4
         wi = 0;
     end
     
-    %Definition of lambdas
+    %Definition of slip ratio
     vmaxi = sqrt(Vyi^2 + (max(wi*r, Vxi))^2);
     LLi = (wi*r-Vxi)/vmaxi;
     LSi = (-Vyi)/vmaxi;
     LTi = sqrt(LLi^2 + LSi^2);
     
-    if LTi == 0
+    if LTi == 0 %pure rolling
         muB = [cos(deltai), -sin(deltai); sin(deltai), cos(deltai)]*[CR; 0];
-    else
+    else %skidding
         kind = rk;
         
         if (ICE == 1) && (t > max(tmin)) && (t < max(tmax))
+            %kind = 2; %Driving on wet asphalt
             kind = 4; %Driving on ice
+            %kind = 6; %Driving on wet cobblestone
         end
         
-        muL = partial_mu(kind,LTi);
+        muL = MuLong(kind,LTi);
         muB = [cos(deltai), -sin(deltai); sin(deltai), cos(deltai)]*[LLi/LTi*muL+CR; LSi/LTi*muL];
     end
     
     muBi(:,i) = muB;
+    
+    %Compute braking torque
     tauBi(i) = [(sin(deltai)*rxi - cos(deltai)*ryi), (cos(deltai)*rxi+sin(deltai)*ryi)]*muB;
 end
 
@@ -116,14 +124,14 @@ for i = 1:4
 end
 
 H = [1 1 1 1; arm_x; arm_y];
-FzW=(H'/(H*H'))*b;
+FzW=(H'/(H*H'))*b; %vertical forces on wheels
 
 FB = FaB;
 tauB = 0;
 
 for i = 1:4
-    FB = FB + muBi(:,i)*FzW(i);
-    tauB = tauB + tauBi(i)*FzW(i);
+    FB = FB + muBi(:,i)*FzW(i); %forces on body
+    tauB = tauB + tauBi(i)*FzW(i); %torques on body
 end
 
 %System definition
