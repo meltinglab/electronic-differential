@@ -10,8 +10,8 @@
 %
 % CURRENT VARIABLES you should not override:
 %
-%   M_car           [kg]:       mass of the car (wheels exluded)
-%   axle_length     [m] :       length of the axle
+%   wheel_base      [m]:        distance between front and rear axles
+%   wheel_radius    [m]:        radius of a single wheel
 %
 %
 %
@@ -71,12 +71,12 @@
 
 
 
-% Total mass of the vehicle sitting on suspensions, that is the global
-% mass of the car excluding wheels' mass.
-M_car = NaN;                % kg
+% Wheel Base. It is the distance between front and rear axles of the
+% vehicle (WhlBase in kinematic steering block)
+wheel_base = (1.515+1.504);     % m
 
 
-% Front and rear axles' length. It corresponds to the distance between
-% (rear or front) wheels in the connection points to axle.
-axle_length = NaN;          % m
+% Wheel radius. It is the half size of a single wheel. All the wheels are
+% considered to be equal
+wheel_radius = NaN;             % m
 
