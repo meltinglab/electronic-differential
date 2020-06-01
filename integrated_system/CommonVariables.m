@@ -75,8 +75,29 @@
 % vehicle (WhlBase in kinematic steering block)
 wheel_base = (1.515+1.504);     % m
 
-
 % Wheel radius. It is the half size of a single wheel. All the wheels are
 % considered to be equal
 wheel_radius = NaN;             % m
 
+% Center of gravity to front and rear axle. They are the distances between the center of
+% gravity and the front/rear axles; they are linked to the wheel base:
+% their sum is the wheel base
+rxf = 1.515;                    % m
+rxr = 1.504;                    % m
+
+% Center of gravity to y-wheel. It is the distance between the center of
+% gravity and the y coordinate of the wheel in the undervehicle reference
+% system. It is the same for either front or rear axle
+ryf = NaN;                      % m
+
+% Cross surface. It is the surface of the vehicle that is impacting the
+% air. It is linked to the aerodynamic performance
+cross_surface = NaN;            % m2
+
+% Drag coefficients. They are responsible for the x and y components of the
+% aerodynamic force
+Cx0 = NaN;
+Cyb = NaN;
+
+% Vehicle mass. It is the mass of the vehicle
+vehicle_mass = NaN;             % kg
