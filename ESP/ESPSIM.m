@@ -48,7 +48,7 @@ for i = 1:4
     
     %Apply control
     if CL == 1
-        wi = wi+ u(i);
+        wi = wi + u(i);
         
         %Implementation of saturation logic
         if wi > Vxi/r %Driving condition

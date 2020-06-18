@@ -41,7 +41,7 @@ lr = sqrt(rxr^2+ryf^2); %center-of-gravity to rear-wheels
 CR = -0.05; %aerodynamic constant
 Iz = 1200*(rxr^2+ryf^2)^2; %moment of inertia
 
-LLf =   0.04; %friction related | 0.0003 
+LLf = 0.04; %friction related | 0.0003 
 omega_r = V/r; %rear wheels speed
 omega_f = V/r/(1-LLf); %front wheels speed
 omega = [omega_f; omega_f; omega_r; omega_r];
