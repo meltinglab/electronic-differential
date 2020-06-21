@@ -49,6 +49,7 @@ muL0 = muL0/4;  %mean mu @ lambda0 = 0, average among 4 road types
 beta00 = 0;
 w00 = 0;
 
+%Definition of the optimization function
 Q = inv(2*diag([(0.2/180*pi)^2 (1/180*pi)^2])); %set Q matrix
 R = inv(4*eye(4)*(40*(2*pi)/60)^2); %set R matrix
 
