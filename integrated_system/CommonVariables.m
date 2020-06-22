@@ -111,6 +111,9 @@ VEH.PitchMomentInertia = 432.3333
 VEH.YawMomentInertia = 2066
 % Longitudinal drag area, Af [m^2]:
 VEH.FrontalArea = 2.1100
+% Wheel radius, [m]
+VEH.WheelRadius = 0.31;
+
 
 % Suspension
 % block: solid axis suspension (Coil spring)
