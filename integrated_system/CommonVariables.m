@@ -113,6 +113,8 @@ VEH.YawMomentInertia = 2066
 VEH.FrontalArea = 2.1100
 % Wheel radius, [m]
 VEH.WheelRadius = 0.31;
+% max speed [m/s]
+VEH.Max_Speed = 160;
 
 
 % Suspension
