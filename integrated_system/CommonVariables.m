@@ -114,7 +114,7 @@ VEH.FrontalArea = 2.1100
 % Wheel radius, [m]
 VEH.WheelRadius = 0.31;
 % max speed [m/s]
-VEH.Max_Speed = 160;
+VEH.MaxSpeed = 160/3.6;
 
 
 % Suspension
