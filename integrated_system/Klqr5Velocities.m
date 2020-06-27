@@ -64,10 +64,11 @@ a12 = -m*V1-(Cf*rxf + Cr*rxr)/(V1);
 a21 = -(Cf*rxf + Cr*rxr);
 a22 = -(Cf*lf^2 + Cr*lr^2)/(V1);
 A = [1/(m*V1) 0;0 1/Iz]*[a11, a12; a21, a22];
+A_1 = A;
 
 b1 = Cf;
 b2 = Cf*rxf;
-B1 = [1/(m*V1) 0;0 1/Iz]*[b1; b2];
+B1_1 = [1/(m*V1) 0;0 1/Iz]*[b1; b2];
 
 B2 = ryf*r/(2*Iz*V1)*[zeros(1,4); -Cf, Cf, Cr, -Cr];
 
@@ -89,10 +90,11 @@ a12 = -m*V2-(Cf*rxf + Cr*rxr)/(V2);
 a21 = -(Cf*rxf + Cr*rxr);
 a22 = -(Cf*lf^2 + Cr*lr^2)/(V2);
 A = [1/(m*V2) 0;0 1/Iz]*[a11, a12; a21, a22];
+A_2 = A;
 
 b1 = Cf;
 b2 = Cf*rxf;
-B1 = [1/(m*V2) 0;0 1/Iz]*[b1; b2];
+B1_2 = [1/(m*V2) 0;0 1/Iz]*[b1; b2];
 
 B2 = ryf*r/(2*Iz*V2)*[zeros(1,4); -Cf, Cf, Cr, -Cr];
 
@@ -114,10 +116,11 @@ a12 = -m*V3-(Cf*rxf + Cr*rxr)/(V3);
 a21 = -(Cf*rxf + Cr*rxr);
 a22 = -(Cf*lf^2 + Cr*lr^2)/(V3);
 A = [1/(m*V3) 0;0 1/Iz]*[a11, a12; a21, a22];
+A_3 = A;
 
 b1 = Cf;
 b2 = Cf*rxf;
-B1 = [1/(m*V3) 0;0 1/Iz]*[b1; b2];
+B1_3 = [1/(m*V3) 0;0 1/Iz]*[b1; b2];
 
 B2 = ryf*r/(2*Iz*V3)*[zeros(1,4); -Cf, Cf, Cr, -Cr];
 
@@ -139,10 +142,11 @@ a12 = -m*V4-(Cf*rxf + Cr*rxr)/(V4);
 a21 = -(Cf*rxf + Cr*rxr);
 a22 = -(Cf*lf^2 + Cr*lr^2)/(V4);
 A = [1/(m*V4) 0;0 1/Iz]*[a11, a12; a21, a22];
+A_4 = A;
 
 b1 = Cf;
 b2 = Cf*rxf;
-B1 = [1/(m*V4) 0;0 1/Iz]*[b1; b2];
+B1_4 = [1/(m*V4) 0;0 1/Iz]*[b1; b2];
 
 B2 = ryf*r/(2*Iz*V4)*[zeros(1,4); -Cf, Cf, Cr, -Cr];
 
@@ -164,10 +168,11 @@ a12 = -m*V5-(Cf*rxf + Cr*rxr)/(V5);
 a21 = -(Cf*rxf + Cr*rxr);
 a22 = -(Cf*lf^2 + Cr*lr^2)/(V5);
 A = [1/(m*V5) 0;0 1/Iz]*[a11, a12; a21, a22];
+A_5 = A;
 
 b1 = Cf;
 b2 = Cf*rxf;
-B1 = [1/(m*V5) 0;0 1/Iz]*[b1; b2];
+B1_5 = [1/(m*V5) 0;0 1/Iz]*[b1; b2];
 
 B2 = ryf*r/(2*Iz*V5)*[zeros(1,4); -Cf, Cf, Cr, -Cr];
 
