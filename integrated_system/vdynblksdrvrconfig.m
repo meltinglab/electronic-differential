@@ -1,11 +1,16 @@
 function [varargout]= vdynblksdrvrconfig(varargin)
-%   Copyright 2018 The MathWorks, Inc.
+%   Copyright 2018-2019 The MathWorks, Inc.
 block = varargin{1};
 varargout{1} = {};
 simStopped = autoblkschecksimstopped(block,true);
 driverType = get_param(block,'driverType');
-manType = get_param([bdroot(block) '/Reference Generator'],'manType');
-useDefValues = get_param([bdroot(block) '/Reference Generator'],'manOverride');
+if ~isempty(find_system(bdroot(block),'Name','Reference Generator'))
+    manType = get_param([bdroot(block) '/Reference Generator'],'manType');
+    useDefValues = get_param([bdroot(block) '/Reference Generator'],'manOverride');
+else
+    manType = '';
+    useDefValues = 'off';
+end
 drvPath = [block '/Driver Commands/Predictive Driver/Linear Predictive Driver'];
 if simStopped
     switch driverType
@@ -24,8 +29,8 @@ if simStopped
             if strcmp(useDefValues,'on')
                 if strcmp('Double Lane Change',manType)                    
                     set_param(drvPath,'tau','0.03')
-                    set_param(drvPath,'L','5.5')
-                    set_param(drvPath,'theta','20*pi/180')
+                    set_param(drvPath,'L','6')
+                    set_param(drvPath,'theta','30*pi/180')
                 else
                     set_param(drvPath,'tau','0.03')
                     set_param(drvPath,'L','1.0')

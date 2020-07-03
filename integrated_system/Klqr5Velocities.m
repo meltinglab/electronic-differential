@@ -2,8 +2,8 @@
 
 % Initial conditions
 psi0 = 0/180*pi;
-x0 = 0;
-y0 = 0;
+x0 = VEH.InitialLongPosition;
+y0 = VEH.InitialLatPosition;
 
 % System variables
 g = 9.81; %gravity acceleration
@@ -12,13 +12,13 @@ S = VEH.FrontalArea; %cross surface
 Cx0 = -0.3; %drag coefficient
 Cyb = -0.03; %drag coefficient
 rk = 1; %dry asphalt
-m = 1200; %vehicle mass
+m = VEH.Mass; %vehicle mass
 
-rxf = 1.4; %center-of-gravity to front axle
-rxr = -1.6; %center-of-gravity to rear axle
-ryf = 0.90; %center-of-gravity to y-wheel
-rz = -0.70;
-r = 0.28; %wheel radius
+rxf = VEH.FrontAxlePositionfromCG; %center-of-gravity to front axle
+rxr = -VEH.RearAxlePositionfromCG; %center-of-gravity to rear axle
+ryf = VEH.wheel_to_wheel/2; %center-of-gravity to y-wheel
+rz = VEH.center_of_mass;
+r = VEH.WheelRadius; %wheel radius
 rx = [rxf rxf rxr rxr];
 ry = [ryf -ryf -ryf ryf];
 
@@ -27,7 +27,7 @@ lf = sqrt(rxf^2+ryf^2); %center-of-gravity to front-wheels
 lr = sqrt(rxr^2+ryf^2); %center-of-gravity to rear-wheels
 
 CR = -0.05; %aerodynamic constant
-Iz = 1200*(rxr^2+ryf^2)^2; %moment of inertia
+Iz = m*(rxr^2+ryf^2)^2; %moment of inertia
 
 LLf =   0.04; %friction related | 0.0003 
 

@@ -83,6 +83,10 @@
 VEH.FrontAxlePositionfromCG = 1.515000000000000
 % Rearward location of tire, b [m]:
 VEH.RearAxlePositionfromCG = 1.504000000000000
+% wheel to wheel distance [m]:
+VEH.wheel_to_wheel = 1.80
+%height of center of mass [m]:
+VEH.center_of_mass =-0.70
 % Vehicle mass, m [kg]:
 VEH.Mass = 1181
 % Track hardpoint coordinates relative to axle center, TrackCoords [m]
@@ -217,5 +221,9 @@ efficiency_table = [85 85 85 85 85 85 85 85 85 85 85 85 85 85 85;85 85 85 85 85 
 % (break point)
 T_eff_bp = [0 20 40 60 80 100 120 140 160 180 200 220 240 260 280]
 w_eff_bp =[0 1000 2000 2728.370453 3000 4000 5000 6000 7000 8000 9000 10000]
+
+
+DLCXref=[0 7 9 18 33.5 34 42 50 60]
+DLCYref=[0 0 -4.5 -4 -3.75 1.25 0.75 0 0]
 
 
