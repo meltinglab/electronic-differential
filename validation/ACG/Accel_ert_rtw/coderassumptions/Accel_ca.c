@@ -16,15 +16,15 @@ const CA_HWImpl CA_Accel_ExpHW = {
   64,                                  /* BitPerLongLong */
   32,                                  /* BitPerFloat */
   64,                                  /* BitPerDouble */
-  32,                                  /* BitPerPointer */
-  32,                                  /* BitPerSizeT */
-  32,                                  /* BitPerPtrDiffT */
+  64,                                  /* BitPerPointer */
+  64,                                  /* BitPerSizeT */
+  64,                                  /* BitPerPtrDiffT */
   CA_LITTLE_ENDIAN,                    /* Endianess */
   CA_ZERO,                             /* IntDivRoundTo */
   1,                                   /* ShiftRightIntArith */
   0,                                   /* LongLongMode */
   0,                                   /* PortableWordSizes */
-  "ARM Compatible->ARM Cortex",        /* HWDeviceType */
+  "Intel->x86-64 (Windows64)",         /* HWDeviceType */
   0,                                   /* MemoryAtStartup */
   0,                                   /* DenormalFlushToZero */
   0                                    /* DenormalAsZero */

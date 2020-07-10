@@ -144,7 +144,7 @@ Output entry point of generated code
 Timing
 </td>
 <td width="75%" align="left" valign="top">
-Must be called periodically, every 0.1 seconds
+Must be called periodically, every 0.6 seconds
 </td>
 
 </tr>
@@ -276,10 +276,10 @@ Dimension
 </tr>
 <tr class="even">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:816')" name="code2model" class="code2model">&lt;S1&gt;/AccelPdl</a>
+<a href="matlab:coder.internal.code2model('car_model_SIL:816')" name="code2model" class="code2model">&lt;S1&gt;/AccelPdl</a>
 </td>
 <td width="26%" align="left" valign="top">
-Accel_U.Accel_i
+Accel_U.AccelPdl
 </td>
 <td width="21%" align="left" valign="top">
 real_T
@@ -291,7 +291,7 @@ real_T
 </tr>
 <tr class="odd">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2464')" name="code2model" class="code2model">&lt;S1&gt;/WhlAng</a>
+<a href="matlab:coder.internal.code2model('car_model_SIL:2464')" name="code2model" class="code2model">&lt;S1&gt;/WhlAng</a>
 </td>
 <td width="26%" align="left" valign="top">
 Accel_U.WhlAng
@@ -306,7 +306,7 @@ real_T
 </tr>
 <tr class="even">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2510')" name="code2model" class="code2model">&lt;S1&gt;/xdot</a>
+<a href="matlab:coder.internal.code2model('car_model_SIL:2510')" name="code2model" class="code2model">&lt;S1&gt;/xdot</a>
 </td>
 <td width="26%" align="left" valign="top">
 Accel_U.xdot
@@ -321,7 +321,7 @@ real_T
 </tr>
 <tr class="odd">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2511')" name="code2model" class="code2model">&lt;S1&gt;/ydot</a>
+<a href="matlab:coder.internal.code2model('car_model_SIL:2511')" name="code2model" class="code2model">&lt;S1&gt;/ydot</a>
 </td>
 <td width="26%" align="left" valign="top">
 Accel_U.ydot
@@ -336,7 +336,7 @@ real_T
 </tr>
 <tr class="even">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2504')" name="code2model" class="code2model">&lt;S1&gt;/YawRate</a>
+<a href="matlab:coder.internal.code2model('car_model_SIL:2504')" name="code2model" class="code2model">&lt;S1&gt;/YawRate</a>
 </td>
 <td width="26%" align="left" valign="top">
 Accel_U.r
@@ -351,10 +351,10 @@ real_T
 </tr>
 <tr class="odd">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:817')" name="code2model" class="code2model">&lt;S1&gt;/MotSpd</a>
+<a href="matlab:coder.internal.code2model('car_model_SIL:817')" name="code2model" class="code2model">&lt;S1&gt;/MotSpd</a>
 </td>
 <td width="26%" align="left" valign="top">
-Accel_U.EngSpd
+Accel_U.MotSpd
 </td>
 <td width="21%" align="left" valign="top">
 real_T
@@ -402,7 +402,7 @@ Dimension
 </tr>
 <tr class="even">
 <td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:821')" name="code2model" class="code2model">&lt;S1&gt;/TrqCmd</a>
+<a href="matlab:coder.internal.code2model('car_model_SIL:821')" name="code2model" class="code2model">&lt;S1&gt;/TrqCmd</a>
 </td>
 <td width="26%" align="left" valign="top">
 Accel_Y.TrqCmd
@@ -423,456 +423,9 @@ Interface Parameters
 </a>
 
 </h3>
-<span title="Click to shrink or expand table" onclick="rtwTableShrink(this)">[-]</span><table width="100%" class="AltRow FirstColumn" cellspacing="0">
-<tr class="heading">
-<th width="42%" align="left" valign="top">
-<b>
-Parameter Source
-</b>
-
-</th>
-<th width="26%" align="left" valign="top">
-<b>
-Code Identifier
-</b>
-
-</th>
-<th width="21%" align="left" valign="top">
-<b>
-Data Type
-</b>
-
-</th>
-<th width="10%" align="right" valign="top">
-<b>
-Dimension
-</b>
-
-</th>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-VEH
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.VEH
-</td>
-<td width="21%" align="left" valign="top">
-struct_qm0PExI0AxHWASzOnN0CqB
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-Klqr1
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Klqr1
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-[4  2]
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-Klqr2
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Klqr2
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-[4  2]
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-Klqr3
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Klqr3
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-[4  2]
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-Klqr4
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Klqr4
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-[4  2]
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-Klqr5
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Klqr5
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-[4  2]
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-MotSpd
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.MotSpd
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-[1  12]
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-MotTrq
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.MotTrq
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-[1  12]
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2561')" name="code2model" class="code2model">&lt;S1&gt;/Discrete PID Controller</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.DiscretePIDController_I
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2561')" name="code2model" class="code2model">&lt;S1&gt;/Discrete PID Controller</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.DiscretePIDController_InitialCo
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2561')" name="code2model" class="code2model">&lt;S1&gt;/Discrete PID Controller</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.DiscretePIDController_LowerSatu
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2561')" name="code2model" class="code2model">&lt;S1&gt;/Discrete PID Controller</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.DiscretePIDController_P
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2561')" name="code2model" class="code2model">&lt;S1&gt;/Discrete PID Controller</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.DiscretePIDController_UpperSatu
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2561:655')" name="code2model" class="code2model">&lt;S30&gt;/Constant1</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Constant1_Value
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:820')" name="code2model" class="code2model">&lt;S1&gt;/rads_to_rpm</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.rads_to_rpm_Gain
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2478')" name="code2model" class="code2model">&lt;S6&gt;/Saturation RefSpd</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.SaturationRefSpd_UpperSat
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2478')" name="code2model" class="code2model">&lt;S6&gt;/Saturation RefSpd</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.SaturationRefSpd_LowerSat
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2485')" name="code2model" class="code2model">&lt;S6&gt;/pi half</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.pihalf_Value
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2479')" name="code2model" class="code2model">&lt;S6&gt;/Saturation WhlAnd</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.SaturationWhlAnd_UpperSat
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2479')" name="code2model" class="code2model">&lt;S6&gt;/Saturation WhlAnd</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.SaturationWhlAnd_LowerSat
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2480')" name="code2model" class="code2model">&lt;S6&gt;/Saturation WhlSpd</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.SaturationWhlSpd_UpperSat
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2480')" name="code2model" class="code2model">&lt;S6&gt;/Saturation WhlSpd</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.SaturationWhlSpd_LowerSat
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2555')" name="code2model" class="code2model">&lt;S5&gt;/Gain</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Gain_Gain
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2559')" name="code2model" class="code2model">&lt;S5&gt;/Constant</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Constant_Value
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-[10   2]
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2560')" name="code2model" class="code2model">&lt;S5&gt;/Constant1</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Constant1_Value_o
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-[10   1]
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2561:671')" name="code2model" class="code2model">&lt;S30&gt;/ZeroGain</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.ZeroGain_Gain
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="even">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2561:843')" name="code2model" class="code2model">&lt;S37&gt;/Integrator</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Integrator_gainval
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-<tr class="odd">
-<td width="42%" align="left" valign="top">
-<a href="matlab:coder.internal.code2model('car_system_PIL:2567')" name="code2model" class="code2model">&lt;S1&gt;/Zero saturation</a>
-</td>
-<td width="26%" align="left" valign="top">
-Accel_P.Zerosaturation_Value
-</td>
-<td width="21%" align="left" valign="top">
-real_T
-</td>
-<td width="10%" align="right" valign="top">
-1
-</td>
-
-</tr>
-
-</table>
+<p>
+No interface/tunable parameters in model.
+</p>
 <h3>
 <a name="sec_Data_Stores">
 Data Stores

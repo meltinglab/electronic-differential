@@ -9,19 +9,16 @@
  *
  * Model version                  : 1.101
  * Simulink Coder version         : 9.2 (R2019b) 18-Jul-2019
- * C/C++ source code generated on : Mon Jul  6 22:04:55 2020
+ * C/C++ source code generated on : Tue Jul  7 17:05:20 2020
  *
  * Target selection: ert.tlc
- * Embedded hardware selection: ARM Compatible->ARM Cortex
+ * Embedded hardware selection: Intel->x86-64 (Windows64)
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
 
 #include "Accel.h"
 #include "Accel_private.h"
-
-/* Block signals (default storage) */
-B_Accel_T Accel_B;
 
 /* Block states (default storage) */
 DW_Accel_T Accel_DW;
@@ -97,52 +94,6 @@ real_T look1_binlcapw(real_T u0, const real_T bp0[], const real_T table[],
   return y;
 }
 
-real_T rt_powd_snf(real_T u0, real_T u1)
-{
-  real_T y;
-  real_T tmp;
-  real_T tmp_0;
-  if (rtIsNaN(u0) || rtIsNaN(u1)) {
-    y = (rtNaN);
-  } else {
-    tmp = fabs(u0);
-    tmp_0 = fabs(u1);
-    if (rtIsInf(u1)) {
-      if (tmp == 1.0) {
-        y = 1.0;
-      } else if (tmp > 1.0) {
-        if (u1 > 0.0) {
-          y = (rtInf);
-        } else {
-          y = 0.0;
-        }
-      } else if (u1 > 0.0) {
-        y = 0.0;
-      } else {
-        y = (rtInf);
-      }
-    } else if (tmp_0 == 0.0) {
-      y = 1.0;
-    } else if (tmp_0 == 1.0) {
-      if (u1 > 0.0) {
-        y = u0;
-      } else {
-        y = 1.0 / u0;
-      }
-    } else if (u1 == 2.0) {
-      y = u0 * u0;
-    } else if ((u1 == 0.5) && (u0 >= 0.0)) {
-      y = sqrt(u0);
-    } else if ((u0 < 0.0) && (u1 > floor(u1))) {
-      y = (rtNaN);
-    } else {
-      y = pow(u0, u1);
-    }
-  }
-
-  return y;
-}
-
 real_T rt_hypotd_snf(real_T u0, real_T u1)
 {
   real_T y;
@@ -200,190 +151,93 @@ real_T rt_atan2d_snf(real_T u0, real_T u1)
   return y;
 }
 
-/* Model step function */
-void Accel_step(void)
+real_T rt_powd_snf(real_T u0, real_T u1)
 {
-  boolean_T rtb_NotEqual;
-  real_T rtb_Switch_j_idx_2;
-  real_T A_idx_1;
-  real_T rtb_Switch_j_idx_0;
-  real_T u0;
-  real_T u0_0;
-  int32_T rtb_ComplextoMagnitudeAngle_o_0;
-
-  /* Gain: '<S1>/rads_to_rpm' incorporates:
-   *  Inport: '<Root>/MotSpd'
-   */
-  Accel_Y.TrqCmd[0] = Accel_P.rads_to_rpm_Gain * Accel_U.EngSpd[0];
-
-  /* Lookup_n-D: '<S1>/MaxMotTrqVsSpd' */
-  Accel_Y.TrqCmd[0] = look1_binlcapw(Accel_Y.TrqCmd[0], Accel_P.MotSpd,
-    Accel_P.MotTrq, 11U);
-
-  /* Gain: '<S1>/rads_to_rpm' incorporates:
-   *  Inport: '<Root>/MotSpd'
-   */
-  Accel_Y.TrqCmd[1] = Accel_P.rads_to_rpm_Gain * Accel_U.EngSpd[1];
-
-  /* Lookup_n-D: '<S1>/MaxMotTrqVsSpd' */
-  Accel_Y.TrqCmd[1] = look1_binlcapw(Accel_Y.TrqCmd[1], Accel_P.MotSpd,
-    Accel_P.MotTrq, 11U);
-
-  /* Gain: '<S1>/rads_to_rpm' incorporates:
-   *  Inport: '<Root>/MotSpd'
-   */
-  Accel_Y.TrqCmd[2] = Accel_P.rads_to_rpm_Gain * Accel_U.EngSpd[2];
-
-  /* Lookup_n-D: '<S1>/MaxMotTrqVsSpd' */
-  Accel_Y.TrqCmd[2] = look1_binlcapw(Accel_Y.TrqCmd[2], Accel_P.MotSpd,
-    Accel_P.MotTrq, 11U);
-
-  /* Gain: '<S1>/rads_to_rpm' incorporates:
-   *  Inport: '<Root>/MotSpd'
-   */
-  Accel_Y.TrqCmd[3] = Accel_P.rads_to_rpm_Gain * Accel_U.EngSpd[3];
-
-  /* Lookup_n-D: '<S1>/MaxMotTrqVsSpd' */
-  Accel_Y.TrqCmd[3] = look1_binlcapw(Accel_Y.TrqCmd[3], Accel_P.MotSpd,
-    Accel_P.MotTrq, 11U);
-
-  /* Product: '<S6>/Divide' incorporates:
-   *  Constant: '<S6>/wheel base'
-   */
-  Accel_B.y = Accel_P.VEH.FrontAxlePositionfromCG +
-    Accel_P.VEH.RearAxlePositionfromCG;
-
-  /* Saturate: '<S6>/Saturation WhlAnd' incorporates:
-   *  Inport: '<Root>/WhlAng'
-   */
-  if (Accel_U.WhlAng[0] > Accel_P.SaturationWhlAnd_UpperSat) {
-    u0 = Accel_P.SaturationWhlAnd_UpperSat;
-  } else if (Accel_U.WhlAng[0] < Accel_P.SaturationWhlAnd_LowerSat) {
-    u0 = Accel_P.SaturationWhlAnd_LowerSat;
+  real_T y;
+  real_T tmp;
+  real_T tmp_0;
+  if (rtIsNaN(u0) || rtIsNaN(u1)) {
+    y = (rtNaN);
   } else {
-    u0 = Accel_U.WhlAng[0];
-  }
-
-  /* Sum: '<S6>/Sum' incorporates:
-   *  Abs: '<S6>/Abs'
-   *  Constant: '<S6>/pi half'
-   */
-  Accel_B.rtb_Switch_j_idx_3 = Accel_P.pihalf_Value - fabs(u0);
-
-  /* Product: '<S6>/Divide' incorporates:
-   *  Trigonometry: '<S6>/Cos'
-   */
-  A_idx_1 = Accel_B.y / cos(Accel_B.rtb_Switch_j_idx_3);
-
-  /* SignalConversion generated from: '<S6>/Vector Concatenate2' */
-  rtb_Switch_j_idx_0 = A_idx_1;
-
-  /* Product: '<S6>/Product1' incorporates:
-   *  Trigonometry: '<S6>/Sin'
-   */
-  rtb_Switch_j_idx_2 = A_idx_1 * sin(Accel_B.rtb_Switch_j_idx_3);
-
-  /* Saturate: '<S6>/Saturation WhlAnd' incorporates:
-   *  Inport: '<Root>/WhlAng'
-   */
-  if (Accel_U.WhlAng[1] > Accel_P.SaturationWhlAnd_UpperSat) {
-    u0 = Accel_P.SaturationWhlAnd_UpperSat;
-  } else if (Accel_U.WhlAng[1] < Accel_P.SaturationWhlAnd_LowerSat) {
-    u0 = Accel_P.SaturationWhlAnd_LowerSat;
-  } else {
-    u0 = Accel_U.WhlAng[1];
-  }
-
-  /* Sum: '<S6>/Sum' incorporates:
-   *  Abs: '<S6>/Abs'
-   *  Constant: '<S6>/pi half'
-   */
-  Accel_B.rtb_Switch_j_idx_3 = Accel_P.pihalf_Value - fabs(u0);
-
-  /* Product: '<S6>/Divide' incorporates:
-   *  Trigonometry: '<S6>/Cos'
-   */
-  A_idx_1 = Accel_B.y / cos(Accel_B.rtb_Switch_j_idx_3);
-
-  /* Product: '<S6>/Product1' incorporates:
-   *  Trigonometry: '<S6>/Sin'
-   */
-  Accel_B.rtb_Switch_j_idx_3 = A_idx_1 * sin(Accel_B.rtb_Switch_j_idx_3);
-
-  /* Fcn: '<S6>/Fcn' incorporates:
-   *  Constant: '<S6>/wheel base1'
-   *  SignalConversion generated from: '<S6>/Vector Concatenate1'
-   */
-  u0 = rt_powd_snf((rtb_Switch_j_idx_2 + Accel_B.rtb_Switch_j_idx_3) / 2.0, 2.0)
-    + rt_powd_snf(Accel_P.VEH.RearAxlePositionfromCG, 2.0);
-
-  /* Product: '<S1>/Product' incorporates:
-   *  Constant: '<S1>/VelMax'
-   *  Inport: '<Root>/AccelPdl'
-   */
-  Accel_B.y = Accel_P.VEH.MaxSpeed * Accel_U.Accel_i;
-
-  /* Saturate: '<S6>/Saturation RefSpd' */
-  if (Accel_B.y > Accel_P.SaturationRefSpd_UpperSat) {
-    Accel_B.y = Accel_P.SaturationRefSpd_UpperSat;
-  } else {
-    if (Accel_B.y < Accel_P.SaturationRefSpd_LowerSat) {
-      Accel_B.y = Accel_P.SaturationRefSpd_LowerSat;
+    tmp = fabs(u0);
+    tmp_0 = fabs(u1);
+    if (rtIsInf(u1)) {
+      if (tmp == 1.0) {
+        y = 1.0;
+      } else if (tmp > 1.0) {
+        if (u1 > 0.0) {
+          y = (rtInf);
+        } else {
+          y = 0.0;
+        }
+      } else if (u1 > 0.0) {
+        y = 0.0;
+      } else {
+        y = (rtInf);
+      }
+    } else if (tmp_0 == 0.0) {
+      y = 1.0;
+    } else if (tmp_0 == 1.0) {
+      if (u1 > 0.0) {
+        y = u0;
+      } else {
+        y = 1.0 / u0;
+      }
+    } else if (u1 == 2.0) {
+      y = u0 * u0;
+    } else if ((u1 == 0.5) && (u0 >= 0.0)) {
+      y = sqrt(u0);
+    } else if ((u0 < 0.0) && (u1 > floor(u1))) {
+      y = (rtNaN);
+    } else {
+      y = pow(u0, u1);
     }
   }
 
-  /* End of Saturate: '<S6>/Saturation RefSpd' */
+  return y;
+}
 
-  /* Fcn: '<S6>/Fcn' */
-  if (u0 < 0.0) {
-    u0 = -sqrt(-u0);
-  } else {
-    u0 = sqrt(u0);
-  }
+/* Model step function */
+void Accel_step(void)
+{
+  real_T A[4];
+  real_T r;
+  real_T t;
+  real_T rtb_Gain;
+  real_T rtb_ComplextoMagnitudeAngle_o1;
+  boolean_T rtb_NotEqual;
+  real_T B1_idx_0;
+  real_T rtb_Switch_j_idx_0;
+  int32_T rtb_ComplextoMagnitudeAngle_o_0;
 
-  /* Product: '<S6>/Divide1' */
-  Accel_B.w_v = Accel_B.y / u0;
-
-  /* Saturate: '<S6>/Saturation WhlSpd' incorporates:
-   *  Constant: '<S6>/wheel radius'
-   *  Product: '<S6>/Divide2'
-   *  Product: '<S6>/Product'
-   */
-  Accel_B.y = rtb_Switch_j_idx_0 / Accel_P.VEH.WheelRadius * Accel_B.w_v;
-  u0 = A_idx_1 / Accel_P.VEH.WheelRadius * Accel_B.w_v;
-  u0_0 = rtb_Switch_j_idx_2 / Accel_P.VEH.WheelRadius * Accel_B.w_v;
-  Accel_B.w_v *= Accel_B.rtb_Switch_j_idx_3 / Accel_P.VEH.WheelRadius;
-
+  /* Outputs for Atomic SubSystem: '<Root>/Accel Pedal to Traction Wheel Torque Request' */
   /* ComplexToMagnitudeAngle: '<S1>/Complex to Magnitude-Angle' incorporates:
    *  Inport: '<Root>/xdot'
    *  Inport: '<Root>/ydot'
    */
-  Accel_B.ComplextoMagnitudeAngle_o1 = rt_hypotd_snf(Accel_U.xdot, Accel_U.ydot);
+  rtb_ComplextoMagnitudeAngle_o1 = rt_hypotd_snf(Accel_U.xdot, Accel_U.ydot);
 
   /* Gain: '<S5>/Gain' incorporates:
    *  Inport: '<Root>/WhlAng'
    *  Sum: '<S5>/Sum of Elements'
    */
-  Accel_B.Gain = (Accel_U.WhlAng[0] + Accel_U.WhlAng[1]) * Accel_P.Gain_Gain;
+  rtb_Gain = (Accel_U.WhlAng[0] + Accel_U.WhlAng[1]) * 0.5;
 
-  /* MATLAB Function: '<S5>/equilibrium point' incorporates:
-   *  Constant: '<S5>/Constant'
-   *  Constant: '<S5>/Constant1'
-   */
-  if ((Accel_B.ComplextoMagnitudeAngle_o1 <= 16.666666666666668) ==
-      Accel_B.ComplextoMagnitudeAngle_o1) {
+  /* MATLAB Function: '<S5>/equilibrium point' */
+  if ((rtb_ComplextoMagnitudeAngle_o1 <= 16.666666666666668) ==
+      rtb_ComplextoMagnitudeAngle_o1) {
     rtb_ComplextoMagnitudeAngle_o_0 = 0;
-  } else if (((Accel_B.ComplextoMagnitudeAngle_o1 > 16.666666666666668) &&
-              (Accel_B.ComplextoMagnitudeAngle_o1 <= 22.222222222222221)) ==
-             Accel_B.ComplextoMagnitudeAngle_o1) {
+  } else if (((rtb_ComplextoMagnitudeAngle_o1 > 16.666666666666668) &&
+              (rtb_ComplextoMagnitudeAngle_o1 <= 22.222222222222221)) ==
+             rtb_ComplextoMagnitudeAngle_o1) {
     rtb_ComplextoMagnitudeAngle_o_0 = 1;
-  } else if (((Accel_B.ComplextoMagnitudeAngle_o1 > 22.222222222222221) &&
-              (Accel_B.ComplextoMagnitudeAngle_o1 <= 27.777777777777779)) ==
-             Accel_B.ComplextoMagnitudeAngle_o1) {
+  } else if (((rtb_ComplextoMagnitudeAngle_o1 > 22.222222222222221) &&
+              (rtb_ComplextoMagnitudeAngle_o1 <= 27.777777777777779)) ==
+             rtb_ComplextoMagnitudeAngle_o1) {
     rtb_ComplextoMagnitudeAngle_o_0 = 2;
-  } else if (((Accel_B.ComplextoMagnitudeAngle_o1 > 27.777777777777779) &&
-              (Accel_B.ComplextoMagnitudeAngle_o1 <= 33.333333333333336)) ==
-             Accel_B.ComplextoMagnitudeAngle_o1) {
+  } else if (((rtb_ComplextoMagnitudeAngle_o1 > 27.777777777777779) &&
+              (rtb_ComplextoMagnitudeAngle_o1 <= 33.333333333333336)) ==
+             rtb_ComplextoMagnitudeAngle_o1) {
     rtb_ComplextoMagnitudeAngle_o_0 = 3;
   } else {
     rtb_ComplextoMagnitudeAngle_o_0 = -1;
@@ -391,71 +245,44 @@ void Accel_step(void)
 
   switch (rtb_ComplextoMagnitudeAngle_o_0) {
    case 0:
-    rtb_Switch_j_idx_2 = Accel_P.Constant_Value[0];
-    A_idx_1 = Accel_P.Constant_Value[1];
-    Accel_B.rtb_d1d2_idx_0 = Accel_P.Constant1_Value_o[0];
-    rtb_Switch_j_idx_0 = Accel_P.Constant_Value[10];
-    Accel_B.rtb_Switch_j_idx_3 = Accel_P.Constant_Value[11];
-    Accel_B.rtb_d1d2_idx_1 = Accel_P.Constant1_Value_o[1];
+    A[0] = -16.258886028;
+    B1_idx_0 = 8.09982265190858;
+    A[2] = -0.99999999999999978;
+    A[3] = -5.3210811557468372;
     break;
 
    case 1:
-    rtb_Switch_j_idx_2 = Accel_P.Constant_Value[2];
-    A_idx_1 = Accel_P.Constant_Value[3];
-    Accel_B.rtb_d1d2_idx_0 = Accel_P.Constant1_Value_o[2];
-    rtb_Switch_j_idx_0 = Accel_P.Constant_Value[12];
-    Accel_B.rtb_Switch_j_idx_3 = Accel_P.Constant_Value[13];
-    Accel_B.rtb_d1d2_idx_1 = Accel_P.Constant1_Value_o[3];
+    A[0] = -11.61349002;
+    B1_idx_0 = 5.7855876085061286;
+    A[2] = -1.0;
+    A[3] = -3.8007722541048841;
     break;
 
    case 2:
-    rtb_Switch_j_idx_2 = Accel_P.Constant_Value[4];
-    A_idx_1 = Accel_P.Constant_Value[5];
-    Accel_B.rtb_d1d2_idx_0 = Accel_P.Constant1_Value_o[4];
-    rtb_Switch_j_idx_0 = Accel_P.Constant_Value[14];
-    Accel_B.rtb_Switch_j_idx_3 = Accel_P.Constant_Value[15];
-    Accel_B.rtb_d1d2_idx_1 = Accel_P.Constant1_Value_o[5];
+    A[0] = -9.03271446;
+    B1_idx_0 = 4.4999014732825442;
+    A[2] = -1.0;
+    A[3] = -2.9561561976371316;
     break;
 
    case 3:
-    rtb_Switch_j_idx_2 = Accel_P.Constant_Value[6];
-    A_idx_1 = Accel_P.Constant_Value[7];
-    Accel_B.rtb_d1d2_idx_0 = Accel_P.Constant1_Value_o[6];
-    rtb_Switch_j_idx_0 = Accel_P.Constant_Value[16];
-    Accel_B.rtb_Switch_j_idx_3 = Accel_P.Constant_Value[17];
-    Accel_B.rtb_d1d2_idx_1 = Accel_P.Constant1_Value_o[7];
+    A[0] = -7.3904027400000007;
+    B1_idx_0 = 3.6817375690493548;
+    A[2] = -1.0;
+    A[3] = -2.4186732526121988;
     break;
 
    default:
-    rtb_Switch_j_idx_2 = Accel_P.Constant_Value[8];
-    A_idx_1 = Accel_P.Constant_Value[9];
-    Accel_B.rtb_d1d2_idx_0 = Accel_P.Constant1_Value_o[8];
-    rtb_Switch_j_idx_0 = Accel_P.Constant_Value[18];
-    Accel_B.rtb_Switch_j_idx_3 = Accel_P.Constant_Value[19];
-    Accel_B.rtb_d1d2_idx_1 = Accel_P.Constant1_Value_o[9];
+    A[0] = -6.2534177030769236;
+    B1_idx_0 = 3.1153164045802231;
+    A[2] = -1.0;
+    A[3] = -2.0465696752872451;
     break;
   }
 
-  if (fabs(A_idx_1) > fabs(rtb_Switch_j_idx_2)) {
-    Accel_B.r = rtb_Switch_j_idx_2 / A_idx_1;
-    Accel_B.t = 1.0 / (Accel_B.r * Accel_B.rtb_Switch_j_idx_3 -
-                       rtb_Switch_j_idx_0);
-    Accel_B.u[0] = Accel_B.rtb_Switch_j_idx_3 / A_idx_1 * Accel_B.t;
-    Accel_B.u[1] = -Accel_B.t;
-    Accel_B.u[2] = -rtb_Switch_j_idx_0 / A_idx_1 * Accel_B.t;
-    Accel_B.u[3] = Accel_B.r * Accel_B.t;
-  } else {
-    Accel_B.r = A_idx_1 / rtb_Switch_j_idx_2;
-    Accel_B.t = 1.0 / (Accel_B.rtb_Switch_j_idx_3 - Accel_B.r *
-                       rtb_Switch_j_idx_0);
-    Accel_B.u[0] = Accel_B.rtb_Switch_j_idx_3 / rtb_Switch_j_idx_2 * Accel_B.t;
-    Accel_B.u[1] = -Accel_B.r * Accel_B.t;
-    Accel_B.u[2] = -rtb_Switch_j_idx_0 / rtb_Switch_j_idx_2 * Accel_B.t;
-    Accel_B.u[3] = Accel_B.t;
-  }
-
-  Accel_B.r = -Accel_B.u[1] * Accel_B.rtb_d1d2_idx_0 + -Accel_B.u[3] *
-    Accel_B.rtb_d1d2_idx_1;
+  r = 2.6112791887579569E-15 / A[0];
+  t = 1.0 / (A[3] - r * A[2]);
+  r = -(-r * t) * B1_idx_0 + -t * 18.059623820272346;
 
   /* Sum: '<S5>/Subtract' incorporates:
    *  ComplexToMagnitudeAngle: '<S1>/Complex to Magnitude-Angle'
@@ -463,15 +290,14 @@ void Accel_step(void)
    *  Inport: '<Root>/ydot'
    *  MATLAB Function: '<S5>/equilibrium point'
    */
-  Accel_B.rtb_d1d2_idx_0 = rt_atan2d_snf(Accel_U.ydot, Accel_U.xdot) -
-    (-Accel_B.u[0] * Accel_B.rtb_d1d2_idx_0 + -Accel_B.u[2] *
-     Accel_B.rtb_d1d2_idx_1) * Accel_B.Gain;
+  B1_idx_0 = rt_atan2d_snf(Accel_U.ydot, Accel_U.xdot) - (-(A[3] / A[0] * t) *
+    B1_idx_0 + -(-A[2] / A[0] * t) * 18.059623820272346) * rtb_Gain;
 
   /* Sum: '<S5>/Subtract1' incorporates:
    *  Inport: '<Root>/YawRate'
    *  MATLAB Function: '<S5>/equilibrium point'
    */
-  Accel_B.rtb_d1d2_idx_1 = Accel_U.r - Accel_B.r * Accel_B.Gain;
+  r = Accel_U.r - r * rtb_Gain;
 
   /* MATLAB Function: '<S2>/Switch control action' incorporates:
    *  Gain: '<S2>/K1'
@@ -480,31 +306,30 @@ void Accel_step(void)
    *  Gain: '<S2>/K4'
    *  Gain: '<S2>/K5'
    */
-  Accel_B.u[0] = 0.0;
-  Accel_B.u[1] = 0.0;
-  Accel_B.u[2] = 0.0;
-  Accel_B.u[3] = 0.0;
-  if ((!(fabs(Accel_B.rtb_d1d2_idx_0 - floor((Accel_B.rtb_d1d2_idx_0 +
-           3.1415926535897931) / 6.2831853071795862) * 6.2831853071795862) >
-         1.5707963267948966)) && (!(fabs(Accel_B.rtb_d1d2_idx_1) >
-        12.566370614359172))) {
-    if ((Accel_B.ComplextoMagnitudeAngle_o1 <= 16.666666666666668) ==
-        Accel_B.ComplextoMagnitudeAngle_o1) {
+  A[0] = 0.0;
+  A[1] = 0.0;
+  A[2] = 0.0;
+  A[3] = 0.0;
+  if ((!(fabs(B1_idx_0 - floor((B1_idx_0 + 3.1415926535897931) /
+          6.2831853071795862) * 6.2831853071795862) > 1.5707963267948966)) &&
+      (!(fabs(r) > 12.566370614359172))) {
+    if ((rtb_ComplextoMagnitudeAngle_o1 <= 16.666666666666668) ==
+        rtb_ComplextoMagnitudeAngle_o1) {
       rtb_ComplextoMagnitudeAngle_o_0 = 0;
-    } else if (((Accel_B.ComplextoMagnitudeAngle_o1 > 16.666666666666668) &&
-                (Accel_B.ComplextoMagnitudeAngle_o1 <= 22.222222222222221)) ==
-               Accel_B.ComplextoMagnitudeAngle_o1) {
+    } else if (((rtb_ComplextoMagnitudeAngle_o1 > 16.666666666666668) &&
+                (rtb_ComplextoMagnitudeAngle_o1 <= 22.222222222222221)) ==
+               rtb_ComplextoMagnitudeAngle_o1) {
       rtb_ComplextoMagnitudeAngle_o_0 = 1;
-    } else if (((Accel_B.ComplextoMagnitudeAngle_o1 > 22.222222222222221) &&
-                (Accel_B.ComplextoMagnitudeAngle_o1 <= 27.777777777777779)) ==
-               Accel_B.ComplextoMagnitudeAngle_o1) {
+    } else if (((rtb_ComplextoMagnitudeAngle_o1 > 22.222222222222221) &&
+                (rtb_ComplextoMagnitudeAngle_o1 <= 27.777777777777779)) ==
+               rtb_ComplextoMagnitudeAngle_o1) {
       rtb_ComplextoMagnitudeAngle_o_0 = 2;
-    } else if (((Accel_B.ComplextoMagnitudeAngle_o1 > 27.777777777777779) &&
-                (Accel_B.ComplextoMagnitudeAngle_o1 <= 33.333333333333336)) ==
-               Accel_B.ComplextoMagnitudeAngle_o1) {
+    } else if (((rtb_ComplextoMagnitudeAngle_o1 > 27.777777777777779) &&
+                (rtb_ComplextoMagnitudeAngle_o1 <= 33.333333333333336)) ==
+               rtb_ComplextoMagnitudeAngle_o1) {
       rtb_ComplextoMagnitudeAngle_o_0 = 3;
-    } else if ((Accel_B.ComplextoMagnitudeAngle_o1 > 33.333333333333336) ==
-               Accel_B.ComplextoMagnitudeAngle_o1) {
+    } else if ((rtb_ComplextoMagnitudeAngle_o1 > 33.333333333333336) ==
+               rtb_ComplextoMagnitudeAngle_o1) {
       rtb_ComplextoMagnitudeAngle_o_0 = 4;
     } else {
       rtb_ComplextoMagnitudeAngle_o_0 = -1;
@@ -514,50 +339,45 @@ void Accel_step(void)
      case 0:
       for (rtb_ComplextoMagnitudeAngle_o_0 = 0; rtb_ComplextoMagnitudeAngle_o_0 <
            4; rtb_ComplextoMagnitudeAngle_o_0++) {
-        Accel_B.u[rtb_ComplextoMagnitudeAngle_o_0] =
-          Accel_P.Klqr1[rtb_ComplextoMagnitudeAngle_o_0 + 4] *
-          Accel_B.rtb_d1d2_idx_1 + Accel_P.Klqr1[rtb_ComplextoMagnitudeAngle_o_0]
-          * Accel_B.rtb_d1d2_idx_0;
+        A[rtb_ComplextoMagnitudeAngle_o_0] =
+          Accel_ConstP.K1_Gain[rtb_ComplextoMagnitudeAngle_o_0 + 4] * r +
+          Accel_ConstP.K1_Gain[rtb_ComplextoMagnitudeAngle_o_0] * B1_idx_0;
       }
       break;
 
      case 1:
       for (rtb_ComplextoMagnitudeAngle_o_0 = 0; rtb_ComplextoMagnitudeAngle_o_0 <
            4; rtb_ComplextoMagnitudeAngle_o_0++) {
-        Accel_B.u[rtb_ComplextoMagnitudeAngle_o_0] =
-          Accel_P.Klqr2[rtb_ComplextoMagnitudeAngle_o_0 + 4] *
-          Accel_B.rtb_d1d2_idx_1 + Accel_P.Klqr2[rtb_ComplextoMagnitudeAngle_o_0]
-          * Accel_B.rtb_d1d2_idx_0;
+        A[rtb_ComplextoMagnitudeAngle_o_0] =
+          Accel_ConstP.K2_Gain[rtb_ComplextoMagnitudeAngle_o_0 + 4] * r +
+          Accel_ConstP.K2_Gain[rtb_ComplextoMagnitudeAngle_o_0] * B1_idx_0;
       }
       break;
 
      case 2:
       for (rtb_ComplextoMagnitudeAngle_o_0 = 0; rtb_ComplextoMagnitudeAngle_o_0 <
            4; rtb_ComplextoMagnitudeAngle_o_0++) {
-        Accel_B.u[rtb_ComplextoMagnitudeAngle_o_0] =
-          Accel_P.Klqr3[rtb_ComplextoMagnitudeAngle_o_0 + 4] *
-          Accel_B.rtb_d1d2_idx_1 + Accel_P.Klqr3[rtb_ComplextoMagnitudeAngle_o_0]
-          * Accel_B.rtb_d1d2_idx_0;
+        A[rtb_ComplextoMagnitudeAngle_o_0] =
+          Accel_ConstP.K3_Gain[rtb_ComplextoMagnitudeAngle_o_0 + 4] * r +
+          Accel_ConstP.K3_Gain[rtb_ComplextoMagnitudeAngle_o_0] * B1_idx_0;
       }
       break;
 
      case 3:
       for (rtb_ComplextoMagnitudeAngle_o_0 = 0; rtb_ComplextoMagnitudeAngle_o_0 <
            4; rtb_ComplextoMagnitudeAngle_o_0++) {
-        Accel_B.u[rtb_ComplextoMagnitudeAngle_o_0] =
-          Accel_P.Klqr4[rtb_ComplextoMagnitudeAngle_o_0 + 4] *
-          Accel_B.rtb_d1d2_idx_1 + Accel_P.Klqr4[rtb_ComplextoMagnitudeAngle_o_0]
-          * Accel_B.rtb_d1d2_idx_0;
+        A[rtb_ComplextoMagnitudeAngle_o_0] =
+          Accel_ConstP.K4_Gain[rtb_ComplextoMagnitudeAngle_o_0 + 4] * r +
+          Accel_ConstP.K4_Gain[rtb_ComplextoMagnitudeAngle_o_0] * B1_idx_0;
       }
       break;
 
      case 4:
       for (rtb_ComplextoMagnitudeAngle_o_0 = 0; rtb_ComplextoMagnitudeAngle_o_0 <
            4; rtb_ComplextoMagnitudeAngle_o_0++) {
-        Accel_B.u[rtb_ComplextoMagnitudeAngle_o_0] =
-          Accel_P.Klqr5[rtb_ComplextoMagnitudeAngle_o_0 + 4] *
-          Accel_B.rtb_d1d2_idx_1 + Accel_P.Klqr5[rtb_ComplextoMagnitudeAngle_o_0]
-          * Accel_B.rtb_d1d2_idx_0;
+        A[rtb_ComplextoMagnitudeAngle_o_0] =
+          Accel_ConstP.K5_Gain[rtb_ComplextoMagnitudeAngle_o_0 + 4] * r +
+          Accel_ConstP.K5_Gain[rtb_ComplextoMagnitudeAngle_o_0] * B1_idx_0;
       }
       break;
     }
@@ -565,12 +385,111 @@ void Accel_step(void)
 
   /* End of MATLAB Function: '<S2>/Switch control action' */
 
-  /* Saturate: '<S6>/Saturation WhlSpd' */
-  if (Accel_B.y > Accel_P.SaturationWhlSpd_UpperSat) {
-    Accel_B.y = Accel_P.SaturationWhlSpd_UpperSat;
+  /* Saturate: '<S6>/Saturation WhlAnd' incorporates:
+   *  Inport: '<Root>/WhlAng'
+   */
+  if (Accel_U.WhlAng[0] > 1.3089969389957472) {
+    B1_idx_0 = 1.3089969389957472;
+  } else if (Accel_U.WhlAng[0] < -1.3089969389957472) {
+    B1_idx_0 = -1.3089969389957472;
   } else {
-    if (Accel_B.y < Accel_P.SaturationWhlSpd_LowerSat) {
-      Accel_B.y = Accel_P.SaturationWhlSpd_LowerSat;
+    B1_idx_0 = Accel_U.WhlAng[0];
+  }
+
+  /* Sum: '<S6>/Sum' incorporates:
+   *  Abs: '<S6>/Abs'
+   *  Constant: '<S6>/pi half'
+   */
+  rtb_ComplextoMagnitudeAngle_o1 = 1.5707963267948966 - fabs(B1_idx_0);
+
+  /* Product: '<S6>/Divide' incorporates:
+   *  Constant: '<S6>/wheel base'
+   *  Trigonometry: '<S6>/Cos'
+   */
+  t = 3.019 / cos(rtb_ComplextoMagnitudeAngle_o1);
+
+  /* SignalConversion generated from: '<S6>/Vector Concatenate2' */
+  rtb_Switch_j_idx_0 = t;
+
+  /* Product: '<S6>/Product1' incorporates:
+   *  Trigonometry: '<S6>/Sin'
+   */
+  r = t * sin(rtb_ComplextoMagnitudeAngle_o1);
+
+  /* Saturate: '<S6>/Saturation WhlAnd' incorporates:
+   *  Inport: '<Root>/WhlAng'
+   */
+  if (Accel_U.WhlAng[1] > 1.3089969389957472) {
+    B1_idx_0 = 1.3089969389957472;
+  } else if (Accel_U.WhlAng[1] < -1.3089969389957472) {
+    B1_idx_0 = -1.3089969389957472;
+  } else {
+    B1_idx_0 = Accel_U.WhlAng[1];
+  }
+
+  /* Sum: '<S6>/Sum' incorporates:
+   *  Abs: '<S6>/Abs'
+   *  Constant: '<S6>/pi half'
+   */
+  rtb_ComplextoMagnitudeAngle_o1 = 1.5707963267948966 - fabs(B1_idx_0);
+
+  /* Product: '<S6>/Divide' incorporates:
+   *  Constant: '<S6>/wheel base'
+   *  Trigonometry: '<S6>/Cos'
+   */
+  t = 3.019 / cos(rtb_ComplextoMagnitudeAngle_o1);
+
+  /* Product: '<S6>/Product1' incorporates:
+   *  Trigonometry: '<S6>/Sin'
+   */
+  rtb_Gain = t * sin(rtb_ComplextoMagnitudeAngle_o1);
+
+  /* Fcn: '<S6>/Fcn' incorporates:
+   *  SignalConversion generated from: '<S6>/Vector Concatenate1'
+   */
+  B1_idx_0 = rt_powd_snf((r + rtb_Gain) / 2.0, 2.0) + 2.262016;
+
+  /* Product: '<S1>/Product' incorporates:
+   *  Constant: '<S1>/VelMax'
+   *  Inport: '<Root>/AccelPdl'
+   */
+  rtb_ComplextoMagnitudeAngle_o1 = 44.444444444444443 * Accel_U.AccelPdl;
+
+  /* Saturate: '<S6>/Saturation RefSpd' */
+  if (rtb_ComplextoMagnitudeAngle_o1 > 120.0) {
+    rtb_ComplextoMagnitudeAngle_o1 = 120.0;
+  } else {
+    if (rtb_ComplextoMagnitudeAngle_o1 < -120.0) {
+      rtb_ComplextoMagnitudeAngle_o1 = -120.0;
+    }
+  }
+
+  /* End of Saturate: '<S6>/Saturation RefSpd' */
+
+  /* Fcn: '<S6>/Fcn' */
+  if (B1_idx_0 < 0.0) {
+    B1_idx_0 = -sqrt(-B1_idx_0);
+  } else {
+    B1_idx_0 = sqrt(B1_idx_0);
+  }
+
+  /* Product: '<S6>/Divide1' */
+  B1_idx_0 = rtb_ComplextoMagnitudeAngle_o1 / B1_idx_0;
+
+  /* Saturate: '<S6>/Saturation WhlSpd' incorporates:
+   *  Constant: '<S6>/wheel radius'
+   *  Product: '<S6>/Divide2'
+   *  Product: '<S6>/Product'
+   */
+  rtb_ComplextoMagnitudeAngle_o1 = rtb_Switch_j_idx_0 / 0.31 * B1_idx_0;
+  t = t / 0.31 * B1_idx_0;
+  r = r / 0.31 * B1_idx_0;
+  B1_idx_0 *= rtb_Gain / 0.31;
+  if (rtb_ComplextoMagnitudeAngle_o1 > 600.0) {
+    rtb_ComplextoMagnitudeAngle_o1 = 600.0;
+  } else {
+    if (rtb_ComplextoMagnitudeAngle_o1 < -600.0) {
+      rtb_ComplextoMagnitudeAngle_o1 = -600.0;
     }
   }
 
@@ -578,14 +497,14 @@ void Accel_step(void)
    *  Inport: '<Root>/MotSpd'
    *  Sum: '<S1>/Sum'
    */
-  rtb_Switch_j_idx_2 = (Accel_B.y + Accel_B.u[0]) - Accel_U.EngSpd[0];
+  Accel_Y.TrqCmd[0] = (rtb_ComplextoMagnitudeAngle_o1 + A[0]) - Accel_U.MotSpd[0];
 
   /* Saturate: '<S6>/Saturation WhlSpd' */
-  if (u0 > Accel_P.SaturationWhlSpd_UpperSat) {
-    u0 = Accel_P.SaturationWhlSpd_UpperSat;
+  if (t > 600.0) {
+    t = 600.0;
   } else {
-    if (u0 < Accel_P.SaturationWhlSpd_LowerSat) {
-      u0 = Accel_P.SaturationWhlSpd_LowerSat;
+    if (t < -600.0) {
+      t = -600.0;
     }
   }
 
@@ -593,14 +512,14 @@ void Accel_step(void)
    *  Inport: '<Root>/MotSpd'
    *  Sum: '<S1>/Sum'
    */
-  A_idx_1 = (u0 + Accel_B.u[1]) - Accel_U.EngSpd[1];
+  Accel_Y.TrqCmd[1] = (t + A[1]) - Accel_U.MotSpd[1];
 
   /* Saturate: '<S6>/Saturation WhlSpd' */
-  if (Accel_B.w_v > Accel_P.SaturationWhlSpd_UpperSat) {
-    Accel_B.w_v = Accel_P.SaturationWhlSpd_UpperSat;
+  if (B1_idx_0 > 600.0) {
+    B1_idx_0 = 600.0;
   } else {
-    if (Accel_B.w_v < Accel_P.SaturationWhlSpd_LowerSat) {
-      Accel_B.w_v = Accel_P.SaturationWhlSpd_LowerSat;
+    if (B1_idx_0 < -600.0) {
+      B1_idx_0 = -600.0;
     }
   }
 
@@ -608,14 +527,14 @@ void Accel_step(void)
    *  Inport: '<Root>/MotSpd'
    *  Sum: '<S1>/Sum'
    */
-  rtb_Switch_j_idx_0 = (Accel_B.w_v + Accel_B.u[2]) - Accel_U.EngSpd[2];
+  Accel_Y.TrqCmd[2] = (B1_idx_0 + A[2]) - Accel_U.MotSpd[2];
 
   /* Saturate: '<S6>/Saturation WhlSpd' */
-  if (u0_0 > Accel_P.SaturationWhlSpd_UpperSat) {
-    u0_0 = Accel_P.SaturationWhlSpd_UpperSat;
+  if (r > 600.0) {
+    r = 600.0;
   } else {
-    if (u0_0 < Accel_P.SaturationWhlSpd_LowerSat) {
-      u0_0 = Accel_P.SaturationWhlSpd_LowerSat;
+    if (r < -600.0) {
+      r = -600.0;
     }
   }
 
@@ -623,66 +542,68 @@ void Accel_step(void)
    *  Inport: '<Root>/MotSpd'
    *  Sum: '<S1>/Sum'
    */
-  Accel_B.rtb_Switch_j_idx_3 = (u0_0 + Accel_B.u[3]) - Accel_U.EngSpd[3];
+  Accel_Y.TrqCmd[3] = (r + A[3]) - Accel_U.MotSpd[3];
 
   /* Gain: '<S42>/Proportional Gain' */
-  u0_0 = Accel_P.DiscretePIDController_P * rtb_Switch_j_idx_2;
+  rtb_ComplextoMagnitudeAngle_o1 = 4.5 * Accel_Y.TrqCmd[0];
 
   /* Sum: '<S47>/Sum Fdbk' */
-  Accel_B.r = u0_0 + Accel_DW.Integrator_DSTATE[0];
+  B1_idx_0 = rtb_ComplextoMagnitudeAngle_o1 + Accel_DW.Integrator_DSTATE[0];
 
   /* Gain: '<S30>/ZeroGain' */
-  Accel_B.y = Accel_P.ZeroGain_Gain * Accel_B.r;
+  r = 0.0 * B1_idx_0;
 
   /* DeadZone: '<S30>/DeadZone' */
-  if (Accel_B.r > Accel_P.DiscretePIDController_UpperSatu) {
-    Accel_B.r -= Accel_P.DiscretePIDController_UpperSatu;
-  } else if (Accel_B.r >= Accel_P.DiscretePIDController_LowerSatu) {
-    Accel_B.r = 0.0;
+  if (B1_idx_0 > 280.0) {
+    B1_idx_0 -= 280.0;
   } else {
-    Accel_B.r -= Accel_P.DiscretePIDController_LowerSatu;
+    if (B1_idx_0 >= 0.0) {
+      B1_idx_0 = 0.0;
+    }
   }
 
   /* RelationalOperator: '<S30>/NotEqual' */
-  rtb_NotEqual = (Accel_B.y != Accel_B.r);
+  rtb_NotEqual = (r != B1_idx_0);
 
   /* Signum: '<S30>/SignPreSat' */
-  if (Accel_B.r < 0.0) {
-    Accel_B.r = -1.0;
-  } else if (Accel_B.r > 0.0) {
-    Accel_B.r = 1.0;
-  } else if (Accel_B.r == 0.0) {
-    Accel_B.r = 0.0;
+  if (B1_idx_0 < 0.0) {
+    B1_idx_0 = -1.0;
+  } else if (B1_idx_0 > 0.0) {
+    B1_idx_0 = 1.0;
+  } else if (B1_idx_0 == 0.0) {
+    B1_idx_0 = 0.0;
   } else {
-    Accel_B.r = (rtNaN);
+    B1_idx_0 = (rtNaN);
   }
 
   /* Gain: '<S34>/Integral Gain' */
-  rtb_Switch_j_idx_2 *= Accel_P.DiscretePIDController_I;
+  Accel_Y.TrqCmd[0] *= 0.1;
 
   /* DataTypeConversion: '<S30>/DataTypeConv1' */
-  if (rtIsNaN(Accel_B.r)) {
-    u0 = 0.0;
+  if (rtIsNaN(B1_idx_0)) {
+    B1_idx_0 = 0.0;
   } else {
-    u0 = fmod(Accel_B.r, 256.0);
+    B1_idx_0 = fmod(B1_idx_0, 256.0);
   }
 
-  /* Signum: '<S30>/SignPreIntegrator' */
-  if (rtb_Switch_j_idx_2 < 0.0) {
-    Accel_B.y = -1.0;
-  } else if (rtb_Switch_j_idx_2 > 0.0) {
-    Accel_B.y = 1.0;
-  } else if (rtb_Switch_j_idx_2 == 0.0) {
-    Accel_B.y = 0.0;
+  /* Signum: '<S30>/SignPreIntegrator' incorporates:
+   *  Logic: '<S30>/AND3'
+   */
+  if (Accel_Y.TrqCmd[0] < 0.0) {
+    r = -1.0;
+  } else if (Accel_Y.TrqCmd[0] > 0.0) {
+    r = 1.0;
+  } else if (Accel_Y.TrqCmd[0] == 0.0) {
+    r = 0.0;
   } else {
-    Accel_B.y = (rtNaN);
+    r = (rtNaN);
   }
 
   /* DataTypeConversion: '<S30>/DataTypeConv2' */
-  if (rtIsNaN(Accel_B.y)) {
-    Accel_B.y = 0.0;
+  if (rtIsNaN(r)) {
+    r = 0.0;
   } else {
-    Accel_B.y = fmod(Accel_B.y, 256.0);
+    r = fmod(r, 256.0);
   }
 
   /* Switch: '<S30>/Switch' incorporates:
@@ -692,107 +613,112 @@ void Accel_step(void)
    *  Logic: '<S30>/AND3'
    *  RelationalOperator: '<S30>/Equal1'
    */
-  if (rtb_NotEqual && ((u0 < 0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)-u0 :
-                        (int32_T)(int8_T)(uint8_T)u0) == (Accel_B.y < 0.0 ?
-        (int32_T)(int8_T)-(int8_T)(uint8_T)-Accel_B.y : (int32_T)(int8_T)
-        (uint8_T)Accel_B.y))) {
-    rtb_Switch_j_idx_2 = Accel_P.Constant1_Value;
+  if (rtb_NotEqual && ((B1_idx_0 < 0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)
+                        -B1_idx_0 : (int32_T)(int8_T)(uint8_T)B1_idx_0) == (r <
+        0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)-r : (int32_T)(int8_T)(uint8_T)
+        r))) {
+    B1_idx_0 = 0.0;
+  } else {
+    B1_idx_0 = Accel_Y.TrqCmd[0];
   }
 
   /* DiscreteIntegrator: '<S37>/Integrator' */
-  Accel_B.r = Accel_P.Integrator_gainval * rtb_Switch_j_idx_2;
-  Accel_DW.Integrator_DSTATE[0] += Accel_B.r;
+  B1_idx_0 *= 0.3;
+  Accel_DW.Integrator_DSTATE[0] += B1_idx_0;
 
   /* Sum: '<S46>/Sum' */
-  u0_0 += Accel_DW.Integrator_DSTATE[0];
+  rtb_ComplextoMagnitudeAngle_o1 += Accel_DW.Integrator_DSTATE[0];
 
   /* Saturate: '<S44>/Saturation' */
-  if (u0_0 > Accel_P.DiscretePIDController_UpperSatu) {
-    u0_0 = Accel_P.DiscretePIDController_UpperSatu;
+  if (rtb_ComplextoMagnitudeAngle_o1 > 280.0) {
+    rtb_ComplextoMagnitudeAngle_o1 = 280.0;
   } else {
-    if (u0_0 < Accel_P.DiscretePIDController_LowerSatu) {
-      u0_0 = Accel_P.DiscretePIDController_LowerSatu;
+    if (rtb_ComplextoMagnitudeAngle_o1 < 0.0) {
+      rtb_ComplextoMagnitudeAngle_o1 = 0.0;
     }
   }
 
-  /* RelationalOperator: '<S4>/LowerRelop1' */
-  rtb_NotEqual = (u0_0 > Accel_Y.TrqCmd[0]);
-
-  /* Switch: '<S4>/Switch' incorporates:
-   *  Constant: '<S1>/Zero saturation'
-   *  RelationalOperator: '<S4>/UpperRelop'
+  /* Gain: '<S1>/rads_to_rpm' incorporates:
+   *  Inport: '<Root>/MotSpd'
    */
-  if (u0_0 < Accel_P.Zerosaturation_Value) {
-    u0_0 = Accel_P.Zerosaturation_Value;
-  }
+  Accel_Y.TrqCmd[0] = 9.5492965855137211 * Accel_U.MotSpd[0];
 
-  /* Switch: '<S4>/Switch2' */
-  if (!rtb_NotEqual) {
-    /* Outport: '<Root>/TrqCmd' */
-    Accel_Y.TrqCmd[0] = u0_0;
-  }
+  /* Lookup_n-D: '<S1>/MaxMotTrqVsSpd' */
+  Accel_Y.TrqCmd[0] = look1_binlcapw(Accel_Y.TrqCmd[0],
+    Accel_ConstP.MaxMotTrqVsSpd_bp01Data, Accel_ConstP.MaxMotTrqVsSpd_tableData,
+    11U);
 
   /* Update for DiscreteIntegrator: '<S37>/Integrator' */
-  Accel_DW.Integrator_DSTATE[0] += Accel_B.r;
+  Accel_DW.Integrator_DSTATE[0] += B1_idx_0;
+
+  /* Switch: '<S4>/Switch2' incorporates:
+   *  RelationalOperator: '<S4>/LowerRelop1'
+   */
+  if (!(rtb_ComplextoMagnitudeAngle_o1 > Accel_Y.TrqCmd[0])) {
+    /* Outport: '<Root>/TrqCmd' */
+    Accel_Y.TrqCmd[0] = rtb_ComplextoMagnitudeAngle_o1;
+  }
 
   /* Gain: '<S42>/Proportional Gain' */
-  u0_0 = Accel_P.DiscretePIDController_P * A_idx_1;
+  rtb_ComplextoMagnitudeAngle_o1 = 4.5 * Accel_Y.TrqCmd[1];
 
   /* Sum: '<S47>/Sum Fdbk' */
-  Accel_B.r = u0_0 + Accel_DW.Integrator_DSTATE[1];
+  B1_idx_0 = rtb_ComplextoMagnitudeAngle_o1 + Accel_DW.Integrator_DSTATE[1];
 
   /* Gain: '<S30>/ZeroGain' */
-  Accel_B.y = Accel_P.ZeroGain_Gain * Accel_B.r;
+  r = 0.0 * B1_idx_0;
 
   /* DeadZone: '<S30>/DeadZone' */
-  if (Accel_B.r > Accel_P.DiscretePIDController_UpperSatu) {
-    Accel_B.r -= Accel_P.DiscretePIDController_UpperSatu;
-  } else if (Accel_B.r >= Accel_P.DiscretePIDController_LowerSatu) {
-    Accel_B.r = 0.0;
+  if (B1_idx_0 > 280.0) {
+    B1_idx_0 -= 280.0;
   } else {
-    Accel_B.r -= Accel_P.DiscretePIDController_LowerSatu;
+    if (B1_idx_0 >= 0.0) {
+      B1_idx_0 = 0.0;
+    }
   }
 
   /* RelationalOperator: '<S30>/NotEqual' */
-  rtb_NotEqual = (Accel_B.y != Accel_B.r);
+  rtb_NotEqual = (r != B1_idx_0);
 
   /* Signum: '<S30>/SignPreSat' */
-  if (Accel_B.r < 0.0) {
-    Accel_B.r = -1.0;
-  } else if (Accel_B.r > 0.0) {
-    Accel_B.r = 1.0;
-  } else if (Accel_B.r == 0.0) {
-    Accel_B.r = 0.0;
+  if (B1_idx_0 < 0.0) {
+    B1_idx_0 = -1.0;
+  } else if (B1_idx_0 > 0.0) {
+    B1_idx_0 = 1.0;
+  } else if (B1_idx_0 == 0.0) {
+    B1_idx_0 = 0.0;
   } else {
-    Accel_B.r = (rtNaN);
+    B1_idx_0 = (rtNaN);
   }
 
   /* Gain: '<S34>/Integral Gain' */
-  A_idx_1 *= Accel_P.DiscretePIDController_I;
+  Accel_Y.TrqCmd[1] *= 0.1;
 
   /* DataTypeConversion: '<S30>/DataTypeConv1' */
-  if (rtIsNaN(Accel_B.r)) {
-    u0 = 0.0;
+  if (rtIsNaN(B1_idx_0)) {
+    B1_idx_0 = 0.0;
   } else {
-    u0 = fmod(Accel_B.r, 256.0);
+    B1_idx_0 = fmod(B1_idx_0, 256.0);
   }
 
-  /* Signum: '<S30>/SignPreIntegrator' */
-  if (A_idx_1 < 0.0) {
-    Accel_B.y = -1.0;
-  } else if (A_idx_1 > 0.0) {
-    Accel_B.y = 1.0;
-  } else if (A_idx_1 == 0.0) {
-    Accel_B.y = 0.0;
+  /* Signum: '<S30>/SignPreIntegrator' incorporates:
+   *  Logic: '<S30>/AND3'
+   */
+  if (Accel_Y.TrqCmd[1] < 0.0) {
+    r = -1.0;
+  } else if (Accel_Y.TrqCmd[1] > 0.0) {
+    r = 1.0;
+  } else if (Accel_Y.TrqCmd[1] == 0.0) {
+    r = 0.0;
   } else {
-    Accel_B.y = (rtNaN);
+    r = (rtNaN);
   }
 
   /* DataTypeConversion: '<S30>/DataTypeConv2' */
-  if (rtIsNaN(Accel_B.y)) {
-    Accel_B.y = 0.0;
+  if (rtIsNaN(r)) {
+    r = 0.0;
   } else {
-    Accel_B.y = fmod(Accel_B.y, 256.0);
+    r = fmod(r, 256.0);
   }
 
   /* Switch: '<S30>/Switch' incorporates:
@@ -802,107 +728,112 @@ void Accel_step(void)
    *  Logic: '<S30>/AND3'
    *  RelationalOperator: '<S30>/Equal1'
    */
-  if (rtb_NotEqual && ((u0 < 0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)-u0 :
-                        (int32_T)(int8_T)(uint8_T)u0) == (Accel_B.y < 0.0 ?
-        (int32_T)(int8_T)-(int8_T)(uint8_T)-Accel_B.y : (int32_T)(int8_T)
-        (uint8_T)Accel_B.y))) {
-    A_idx_1 = Accel_P.Constant1_Value;
+  if (rtb_NotEqual && ((B1_idx_0 < 0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)
+                        -B1_idx_0 : (int32_T)(int8_T)(uint8_T)B1_idx_0) == (r <
+        0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)-r : (int32_T)(int8_T)(uint8_T)
+        r))) {
+    B1_idx_0 = 0.0;
+  } else {
+    B1_idx_0 = Accel_Y.TrqCmd[1];
   }
 
   /* DiscreteIntegrator: '<S37>/Integrator' */
-  Accel_B.r = Accel_P.Integrator_gainval * A_idx_1;
-  Accel_DW.Integrator_DSTATE[1] += Accel_B.r;
+  B1_idx_0 *= 0.3;
+  Accel_DW.Integrator_DSTATE[1] += B1_idx_0;
 
   /* Sum: '<S46>/Sum' */
-  u0_0 += Accel_DW.Integrator_DSTATE[1];
+  rtb_ComplextoMagnitudeAngle_o1 += Accel_DW.Integrator_DSTATE[1];
 
   /* Saturate: '<S44>/Saturation' */
-  if (u0_0 > Accel_P.DiscretePIDController_UpperSatu) {
-    u0_0 = Accel_P.DiscretePIDController_UpperSatu;
+  if (rtb_ComplextoMagnitudeAngle_o1 > 280.0) {
+    rtb_ComplextoMagnitudeAngle_o1 = 280.0;
   } else {
-    if (u0_0 < Accel_P.DiscretePIDController_LowerSatu) {
-      u0_0 = Accel_P.DiscretePIDController_LowerSatu;
+    if (rtb_ComplextoMagnitudeAngle_o1 < 0.0) {
+      rtb_ComplextoMagnitudeAngle_o1 = 0.0;
     }
   }
 
-  /* RelationalOperator: '<S4>/LowerRelop1' */
-  rtb_NotEqual = (u0_0 > Accel_Y.TrqCmd[1]);
-
-  /* Switch: '<S4>/Switch' incorporates:
-   *  Constant: '<S1>/Zero saturation'
-   *  RelationalOperator: '<S4>/UpperRelop'
+  /* Gain: '<S1>/rads_to_rpm' incorporates:
+   *  Inport: '<Root>/MotSpd'
    */
-  if (u0_0 < Accel_P.Zerosaturation_Value) {
-    u0_0 = Accel_P.Zerosaturation_Value;
-  }
+  Accel_Y.TrqCmd[1] = 9.5492965855137211 * Accel_U.MotSpd[1];
 
-  /* Switch: '<S4>/Switch2' */
-  if (!rtb_NotEqual) {
-    /* Outport: '<Root>/TrqCmd' */
-    Accel_Y.TrqCmd[1] = u0_0;
-  }
+  /* Lookup_n-D: '<S1>/MaxMotTrqVsSpd' */
+  Accel_Y.TrqCmd[1] = look1_binlcapw(Accel_Y.TrqCmd[1],
+    Accel_ConstP.MaxMotTrqVsSpd_bp01Data, Accel_ConstP.MaxMotTrqVsSpd_tableData,
+    11U);
 
   /* Update for DiscreteIntegrator: '<S37>/Integrator' */
-  Accel_DW.Integrator_DSTATE[1] += Accel_B.r;
+  Accel_DW.Integrator_DSTATE[1] += B1_idx_0;
+
+  /* Switch: '<S4>/Switch2' incorporates:
+   *  RelationalOperator: '<S4>/LowerRelop1'
+   */
+  if (!(rtb_ComplextoMagnitudeAngle_o1 > Accel_Y.TrqCmd[1])) {
+    /* Outport: '<Root>/TrqCmd' */
+    Accel_Y.TrqCmd[1] = rtb_ComplextoMagnitudeAngle_o1;
+  }
 
   /* Gain: '<S42>/Proportional Gain' */
-  u0_0 = Accel_P.DiscretePIDController_P * rtb_Switch_j_idx_0;
+  rtb_ComplextoMagnitudeAngle_o1 = 4.5 * Accel_Y.TrqCmd[2];
 
   /* Sum: '<S47>/Sum Fdbk' */
-  Accel_B.r = u0_0 + Accel_DW.Integrator_DSTATE[2];
+  B1_idx_0 = rtb_ComplextoMagnitudeAngle_o1 + Accel_DW.Integrator_DSTATE[2];
 
   /* Gain: '<S30>/ZeroGain' */
-  Accel_B.y = Accel_P.ZeroGain_Gain * Accel_B.r;
+  r = 0.0 * B1_idx_0;
 
   /* DeadZone: '<S30>/DeadZone' */
-  if (Accel_B.r > Accel_P.DiscretePIDController_UpperSatu) {
-    Accel_B.r -= Accel_P.DiscretePIDController_UpperSatu;
-  } else if (Accel_B.r >= Accel_P.DiscretePIDController_LowerSatu) {
-    Accel_B.r = 0.0;
+  if (B1_idx_0 > 280.0) {
+    B1_idx_0 -= 280.0;
   } else {
-    Accel_B.r -= Accel_P.DiscretePIDController_LowerSatu;
+    if (B1_idx_0 >= 0.0) {
+      B1_idx_0 = 0.0;
+    }
   }
 
   /* RelationalOperator: '<S30>/NotEqual' */
-  rtb_NotEqual = (Accel_B.y != Accel_B.r);
+  rtb_NotEqual = (r != B1_idx_0);
 
   /* Signum: '<S30>/SignPreSat' */
-  if (Accel_B.r < 0.0) {
-    Accel_B.r = -1.0;
-  } else if (Accel_B.r > 0.0) {
-    Accel_B.r = 1.0;
-  } else if (Accel_B.r == 0.0) {
-    Accel_B.r = 0.0;
+  if (B1_idx_0 < 0.0) {
+    B1_idx_0 = -1.0;
+  } else if (B1_idx_0 > 0.0) {
+    B1_idx_0 = 1.0;
+  } else if (B1_idx_0 == 0.0) {
+    B1_idx_0 = 0.0;
   } else {
-    Accel_B.r = (rtNaN);
+    B1_idx_0 = (rtNaN);
   }
 
   /* Gain: '<S34>/Integral Gain' */
-  rtb_Switch_j_idx_0 *= Accel_P.DiscretePIDController_I;
+  Accel_Y.TrqCmd[2] *= 0.1;
 
   /* DataTypeConversion: '<S30>/DataTypeConv1' */
-  if (rtIsNaN(Accel_B.r)) {
-    u0 = 0.0;
+  if (rtIsNaN(B1_idx_0)) {
+    B1_idx_0 = 0.0;
   } else {
-    u0 = fmod(Accel_B.r, 256.0);
+    B1_idx_0 = fmod(B1_idx_0, 256.0);
   }
 
-  /* Signum: '<S30>/SignPreIntegrator' */
-  if (rtb_Switch_j_idx_0 < 0.0) {
-    Accel_B.y = -1.0;
-  } else if (rtb_Switch_j_idx_0 > 0.0) {
-    Accel_B.y = 1.0;
-  } else if (rtb_Switch_j_idx_0 == 0.0) {
-    Accel_B.y = 0.0;
+  /* Signum: '<S30>/SignPreIntegrator' incorporates:
+   *  Logic: '<S30>/AND3'
+   */
+  if (Accel_Y.TrqCmd[2] < 0.0) {
+    r = -1.0;
+  } else if (Accel_Y.TrqCmd[2] > 0.0) {
+    r = 1.0;
+  } else if (Accel_Y.TrqCmd[2] == 0.0) {
+    r = 0.0;
   } else {
-    Accel_B.y = (rtNaN);
+    r = (rtNaN);
   }
 
   /* DataTypeConversion: '<S30>/DataTypeConv2' */
-  if (rtIsNaN(Accel_B.y)) {
-    Accel_B.y = 0.0;
+  if (rtIsNaN(r)) {
+    r = 0.0;
   } else {
-    Accel_B.y = fmod(Accel_B.y, 256.0);
+    r = fmod(r, 256.0);
   }
 
   /* Switch: '<S30>/Switch' incorporates:
@@ -912,107 +843,112 @@ void Accel_step(void)
    *  Logic: '<S30>/AND3'
    *  RelationalOperator: '<S30>/Equal1'
    */
-  if (rtb_NotEqual && ((u0 < 0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)-u0 :
-                        (int32_T)(int8_T)(uint8_T)u0) == (Accel_B.y < 0.0 ?
-        (int32_T)(int8_T)-(int8_T)(uint8_T)-Accel_B.y : (int32_T)(int8_T)
-        (uint8_T)Accel_B.y))) {
-    rtb_Switch_j_idx_0 = Accel_P.Constant1_Value;
+  if (rtb_NotEqual && ((B1_idx_0 < 0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)
+                        -B1_idx_0 : (int32_T)(int8_T)(uint8_T)B1_idx_0) == (r <
+        0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)-r : (int32_T)(int8_T)(uint8_T)
+        r))) {
+    B1_idx_0 = 0.0;
+  } else {
+    B1_idx_0 = Accel_Y.TrqCmd[2];
   }
 
   /* DiscreteIntegrator: '<S37>/Integrator' */
-  Accel_B.r = Accel_P.Integrator_gainval * rtb_Switch_j_idx_0;
-  Accel_DW.Integrator_DSTATE[2] += Accel_B.r;
+  B1_idx_0 *= 0.3;
+  Accel_DW.Integrator_DSTATE[2] += B1_idx_0;
 
   /* Sum: '<S46>/Sum' */
-  u0_0 += Accel_DW.Integrator_DSTATE[2];
+  rtb_ComplextoMagnitudeAngle_o1 += Accel_DW.Integrator_DSTATE[2];
 
   /* Saturate: '<S44>/Saturation' */
-  if (u0_0 > Accel_P.DiscretePIDController_UpperSatu) {
-    u0_0 = Accel_P.DiscretePIDController_UpperSatu;
+  if (rtb_ComplextoMagnitudeAngle_o1 > 280.0) {
+    rtb_ComplextoMagnitudeAngle_o1 = 280.0;
   } else {
-    if (u0_0 < Accel_P.DiscretePIDController_LowerSatu) {
-      u0_0 = Accel_P.DiscretePIDController_LowerSatu;
+    if (rtb_ComplextoMagnitudeAngle_o1 < 0.0) {
+      rtb_ComplextoMagnitudeAngle_o1 = 0.0;
     }
   }
 
-  /* RelationalOperator: '<S4>/LowerRelop1' */
-  rtb_NotEqual = (u0_0 > Accel_Y.TrqCmd[2]);
-
-  /* Switch: '<S4>/Switch' incorporates:
-   *  Constant: '<S1>/Zero saturation'
-   *  RelationalOperator: '<S4>/UpperRelop'
+  /* Gain: '<S1>/rads_to_rpm' incorporates:
+   *  Inport: '<Root>/MotSpd'
    */
-  if (u0_0 < Accel_P.Zerosaturation_Value) {
-    u0_0 = Accel_P.Zerosaturation_Value;
-  }
+  Accel_Y.TrqCmd[2] = 9.5492965855137211 * Accel_U.MotSpd[2];
 
-  /* Switch: '<S4>/Switch2' */
-  if (!rtb_NotEqual) {
-    /* Outport: '<Root>/TrqCmd' */
-    Accel_Y.TrqCmd[2] = u0_0;
-  }
+  /* Lookup_n-D: '<S1>/MaxMotTrqVsSpd' */
+  Accel_Y.TrqCmd[2] = look1_binlcapw(Accel_Y.TrqCmd[2],
+    Accel_ConstP.MaxMotTrqVsSpd_bp01Data, Accel_ConstP.MaxMotTrqVsSpd_tableData,
+    11U);
 
   /* Update for DiscreteIntegrator: '<S37>/Integrator' */
-  Accel_DW.Integrator_DSTATE[2] += Accel_B.r;
+  Accel_DW.Integrator_DSTATE[2] += B1_idx_0;
+
+  /* Switch: '<S4>/Switch2' incorporates:
+   *  RelationalOperator: '<S4>/LowerRelop1'
+   */
+  if (!(rtb_ComplextoMagnitudeAngle_o1 > Accel_Y.TrqCmd[2])) {
+    /* Outport: '<Root>/TrqCmd' */
+    Accel_Y.TrqCmd[2] = rtb_ComplextoMagnitudeAngle_o1;
+  }
 
   /* Gain: '<S42>/Proportional Gain' */
-  u0_0 = Accel_P.DiscretePIDController_P * Accel_B.rtb_Switch_j_idx_3;
+  rtb_ComplextoMagnitudeAngle_o1 = 4.5 * Accel_Y.TrqCmd[3];
 
   /* Sum: '<S47>/Sum Fdbk' */
-  Accel_B.r = u0_0 + Accel_DW.Integrator_DSTATE[3];
+  B1_idx_0 = rtb_ComplextoMagnitudeAngle_o1 + Accel_DW.Integrator_DSTATE[3];
 
   /* Gain: '<S30>/ZeroGain' */
-  Accel_B.y = Accel_P.ZeroGain_Gain * Accel_B.r;
+  r = 0.0 * B1_idx_0;
 
   /* DeadZone: '<S30>/DeadZone' */
-  if (Accel_B.r > Accel_P.DiscretePIDController_UpperSatu) {
-    Accel_B.r -= Accel_P.DiscretePIDController_UpperSatu;
-  } else if (Accel_B.r >= Accel_P.DiscretePIDController_LowerSatu) {
-    Accel_B.r = 0.0;
+  if (B1_idx_0 > 280.0) {
+    B1_idx_0 -= 280.0;
   } else {
-    Accel_B.r -= Accel_P.DiscretePIDController_LowerSatu;
+    if (B1_idx_0 >= 0.0) {
+      B1_idx_0 = 0.0;
+    }
   }
 
   /* RelationalOperator: '<S30>/NotEqual' */
-  rtb_NotEqual = (Accel_B.y != Accel_B.r);
+  rtb_NotEqual = (r != B1_idx_0);
 
   /* Signum: '<S30>/SignPreSat' */
-  if (Accel_B.r < 0.0) {
-    Accel_B.r = -1.0;
-  } else if (Accel_B.r > 0.0) {
-    Accel_B.r = 1.0;
-  } else if (Accel_B.r == 0.0) {
-    Accel_B.r = 0.0;
+  if (B1_idx_0 < 0.0) {
+    B1_idx_0 = -1.0;
+  } else if (B1_idx_0 > 0.0) {
+    B1_idx_0 = 1.0;
+  } else if (B1_idx_0 == 0.0) {
+    B1_idx_0 = 0.0;
   } else {
-    Accel_B.r = (rtNaN);
+    B1_idx_0 = (rtNaN);
   }
 
   /* Gain: '<S34>/Integral Gain' */
-  Accel_B.rtb_Switch_j_idx_3 *= Accel_P.DiscretePIDController_I;
+  Accel_Y.TrqCmd[3] *= 0.1;
 
   /* DataTypeConversion: '<S30>/DataTypeConv1' */
-  if (rtIsNaN(Accel_B.r)) {
-    u0 = 0.0;
+  if (rtIsNaN(B1_idx_0)) {
+    B1_idx_0 = 0.0;
   } else {
-    u0 = fmod(Accel_B.r, 256.0);
+    B1_idx_0 = fmod(B1_idx_0, 256.0);
   }
 
-  /* Signum: '<S30>/SignPreIntegrator' */
-  if (Accel_B.rtb_Switch_j_idx_3 < 0.0) {
-    Accel_B.y = -1.0;
-  } else if (Accel_B.rtb_Switch_j_idx_3 > 0.0) {
-    Accel_B.y = 1.0;
-  } else if (Accel_B.rtb_Switch_j_idx_3 == 0.0) {
-    Accel_B.y = 0.0;
+  /* Signum: '<S30>/SignPreIntegrator' incorporates:
+   *  Logic: '<S30>/AND3'
+   */
+  if (Accel_Y.TrqCmd[3] < 0.0) {
+    r = -1.0;
+  } else if (Accel_Y.TrqCmd[3] > 0.0) {
+    r = 1.0;
+  } else if (Accel_Y.TrqCmd[3] == 0.0) {
+    r = 0.0;
   } else {
-    Accel_B.y = (rtNaN);
+    r = (rtNaN);
   }
 
   /* DataTypeConversion: '<S30>/DataTypeConv2' */
-  if (rtIsNaN(Accel_B.y)) {
-    Accel_B.y = 0.0;
+  if (rtIsNaN(r)) {
+    r = 0.0;
   } else {
-    Accel_B.y = fmod(Accel_B.y, 256.0);
+    r = fmod(r, 256.0);
   }
 
   /* Switch: '<S30>/Switch' incorporates:
@@ -1022,48 +958,53 @@ void Accel_step(void)
    *  Logic: '<S30>/AND3'
    *  RelationalOperator: '<S30>/Equal1'
    */
-  if (rtb_NotEqual && ((u0 < 0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)-u0 :
-                        (int32_T)(int8_T)(uint8_T)u0) == (Accel_B.y < 0.0 ?
-        (int32_T)(int8_T)-(int8_T)(uint8_T)-Accel_B.y : (int32_T)(int8_T)
-        (uint8_T)Accel_B.y))) {
-    Accel_B.rtb_Switch_j_idx_3 = Accel_P.Constant1_Value;
+  if (rtb_NotEqual && ((B1_idx_0 < 0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)
+                        -B1_idx_0 : (int32_T)(int8_T)(uint8_T)B1_idx_0) == (r <
+        0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)-r : (int32_T)(int8_T)(uint8_T)
+        r))) {
+    B1_idx_0 = 0.0;
+  } else {
+    B1_idx_0 = Accel_Y.TrqCmd[3];
   }
 
   /* DiscreteIntegrator: '<S37>/Integrator' */
-  Accel_B.r = Accel_P.Integrator_gainval * Accel_B.rtb_Switch_j_idx_3;
-  Accel_DW.Integrator_DSTATE[3] += Accel_B.r;
+  B1_idx_0 *= 0.3;
+  Accel_DW.Integrator_DSTATE[3] += B1_idx_0;
 
   /* Sum: '<S46>/Sum' */
-  u0_0 += Accel_DW.Integrator_DSTATE[3];
+  rtb_ComplextoMagnitudeAngle_o1 += Accel_DW.Integrator_DSTATE[3];
 
   /* Saturate: '<S44>/Saturation' */
-  if (u0_0 > Accel_P.DiscretePIDController_UpperSatu) {
-    u0_0 = Accel_P.DiscretePIDController_UpperSatu;
+  if (rtb_ComplextoMagnitudeAngle_o1 > 280.0) {
+    rtb_ComplextoMagnitudeAngle_o1 = 280.0;
   } else {
-    if (u0_0 < Accel_P.DiscretePIDController_LowerSatu) {
-      u0_0 = Accel_P.DiscretePIDController_LowerSatu;
+    if (rtb_ComplextoMagnitudeAngle_o1 < 0.0) {
+      rtb_ComplextoMagnitudeAngle_o1 = 0.0;
     }
   }
 
-  /* RelationalOperator: '<S4>/LowerRelop1' */
-  rtb_NotEqual = (u0_0 > Accel_Y.TrqCmd[3]);
-
-  /* Switch: '<S4>/Switch' incorporates:
-   *  Constant: '<S1>/Zero saturation'
-   *  RelationalOperator: '<S4>/UpperRelop'
+  /* Gain: '<S1>/rads_to_rpm' incorporates:
+   *  Inport: '<Root>/MotSpd'
    */
-  if (u0_0 < Accel_P.Zerosaturation_Value) {
-    u0_0 = Accel_P.Zerosaturation_Value;
-  }
+  Accel_Y.TrqCmd[3] = 9.5492965855137211 * Accel_U.MotSpd[3];
 
-  /* Switch: '<S4>/Switch2' */
-  if (!rtb_NotEqual) {
-    /* Outport: '<Root>/TrqCmd' */
-    Accel_Y.TrqCmd[3] = u0_0;
-  }
+  /* Lookup_n-D: '<S1>/MaxMotTrqVsSpd' */
+  Accel_Y.TrqCmd[3] = look1_binlcapw(Accel_Y.TrqCmd[3],
+    Accel_ConstP.MaxMotTrqVsSpd_bp01Data, Accel_ConstP.MaxMotTrqVsSpd_tableData,
+    11U);
 
   /* Update for DiscreteIntegrator: '<S37>/Integrator' */
-  Accel_DW.Integrator_DSTATE[3] += Accel_B.r;
+  Accel_DW.Integrator_DSTATE[3] += B1_idx_0;
+
+  /* Switch: '<S4>/Switch2' incorporates:
+   *  RelationalOperator: '<S4>/LowerRelop1'
+   */
+  if (!(rtb_ComplextoMagnitudeAngle_o1 > Accel_Y.TrqCmd[3])) {
+    /* Outport: '<Root>/TrqCmd' */
+    Accel_Y.TrqCmd[3] = rtb_ComplextoMagnitudeAngle_o1;
+  }
+
+  /* End of Outputs for SubSystem: '<Root>/Accel Pedal to Traction Wheel Torque Request' */
 }
 
 /* Model initialize function */
@@ -1073,12 +1014,6 @@ void Accel_initialize(void)
 
   /* initialize non-finites */
   rt_InitInfAndNaN(sizeof(real_T));
-
-  /* InitializeConditions for DiscreteIntegrator: '<S37>/Integrator' */
-  Accel_DW.Integrator_DSTATE[0] = Accel_P.DiscretePIDController_InitialCo;
-  Accel_DW.Integrator_DSTATE[1] = Accel_P.DiscretePIDController_InitialCo;
-  Accel_DW.Integrator_DSTATE[2] = Accel_P.DiscretePIDController_InitialCo;
-  Accel_DW.Integrator_DSTATE[3] = Accel_P.DiscretePIDController_InitialCo;
 }
 
 /* Model terminate function */

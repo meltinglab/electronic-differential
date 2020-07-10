@@ -5,7 +5,7 @@
  *
  * Hardware Implementation Specification:
  *
- * HWDeviceType: ARM Compatible->ARM Cortex
+ * HWDeviceType: Intel->x86-64 (Windows64)
  * PortableWordSizes: off
  * PreprocMaxBitsUint: 32
  * PreprocMaxBitsSint: 32
