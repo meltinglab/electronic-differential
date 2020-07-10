@@ -2,12 +2,12 @@
 ## Makefile generated for Simulink model 'Accel'. 
 ## 
 ## Makefile     : Accel.mk
-## Generated on : Mon Jul 06 22:05:03 2020
+## Generated on : Tue Jul 07 17:05:36 2020
 ## MATLAB Coder version: 4.3 (R2019b)
 ## 
 ## Build Info:
 ## 
-## Final product: $(RELATIVE_PATH_TO_ANCHOR)/Accel.elf
+## Final product: $(RELATIVE_PATH_TO_ANCHOR)/Accel.exe
 ## Product type : executable
 ## Build type   : Top-Level Standalone Executable
 ## 
@@ -20,7 +20,6 @@
 # Macro Descriptions:
 # PRODUCT_NAME            Name of the system to build
 # MAKEFILE                Name of this makefile
-# COMPILER_COMMAND_FILE   Compiler command listing model reference header paths
 # CMD_FILE                Command file
 
 PRODUCT_NAME              = Accel
@@ -29,14 +28,13 @@ MATLAB_ROOT               = C:/PROGRA~1/MATLAB/R2019b
 MATLAB_BIN                = C:/PROGRA~1/MATLAB/R2019b/bin
 MATLAB_ARCH_BIN           = $(MATLAB_BIN)/win64
 MASTER_ANCHOR_DIR         = 
-START_DIR                 = C:/Users/Alessandro/Documents/GitHub/electronic-differential/integrated_system
+START_DIR                 = C:/Users/FedeB/Desktop/COMPLI~1/ELECTR~1/INTEGR~1
 SOLVER                    = 
 SOLVER_OBJ                = 
 CLASSIC_INTERFACE         = 0
-TGT_FCN_LIB               = ARM Cortex-M (Optimized)
+TGT_FCN_LIB               = ISO_C
 MODEL_HAS_DYNAMICALLY_LOADED_SFCNS = 0
 RELATIVE_PATH_TO_ANCHOR   = ..
-COMPILER_COMMAND_FILE     = Accel_comp.rsp
 CMD_FILE                  = Accel.rsp
 C_STANDARD_OPTS           = 
 CPP_STANDARD_OPTS         = 
@@ -45,79 +43,47 @@ CPP_STANDARD_OPTS         =
 ## TOOLCHAIN SPECIFICATIONS
 ###########################################################################
 
-# Toolchain Name:          GNU Tools for ARM Embedded Processors
-# Supported Version(s):    
+# Toolchain Name:          LCC-win64 v2.4.1 | gmake (64-bit Windows)
+# Supported Version(s):    2.4.1
 # ToolchainInfo Version:   2019b
 # Specification Revision:  1.0
 # 
-#-------------------------------------------
-# Macros assumed to be defined elsewhere
-#-------------------------------------------
-
-# TARGET_LOAD_CMD_ARGS
-# TARGET_LOAD_CMD
-# MW_GNU_ARM_TOOLS_PATH
-# FDATASECTIONS_FLG
 
 #-----------
 # MACROS
 #-----------
 
-LIBGCC                = ${shell $(MW_GNU_ARM_TOOLS_PATH)/arm-none-eabi-gcc ${CFLAGS} -print-libgcc-file-name}
-LIBC                  = ${shell $(MW_GNU_ARM_TOOLS_PATH)/arm-none-eabi-gcc ${CFLAGS} -print-file-name=libc.a}
-LIBM                  = ${shell $(MW_GNU_ARM_TOOLS_PATH)/arm-none-eabi-gcc ${CFLAGS} -print-file-name=libm.a}
-PRODUCT_BIN           = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).bin
-PRODUCT_HEX           = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).hex
-CPFLAGS               = -O binary
-SHELL                 = %SystemRoot%/system32/cmd.exe
+SHELL              = cmd
+LCC_ROOT           = $(MATLAB_ROOT)/sys/lcc64/lcc64
+LCC_BUILDLIB       = $(LCC_ROOT)/bin/buildlib
+LCC_LIB            = $(LCC_ROOT)/lib64
+MW_EXTERNLIB_DIR   = $(MATLAB_ROOT)/extern/lib/win64/microsoft
+MW_LIB_DIR         = $(MATLAB_ROOT)/lib/win64
+TOOLCHAIN_INCLUDES = -I$(LCC_ROOT)/include64
 
 TOOLCHAIN_SRCS = 
 TOOLCHAIN_INCS = 
-TOOLCHAIN_LIBS = -lm
+TOOLCHAIN_LIBS = 
 
 #------------------------
 # BUILD TOOL COMMANDS
 #------------------------
 
-# Assembler: GNU ARM Assembler
-AS_PATH = $(MW_GNU_ARM_TOOLS_PATH)
-AS = "$(AS_PATH)/arm-none-eabi-gcc"
+# C Compiler: Lcc-win64 C Compiler
+CC_PATH = $(LCC_ROOT)/bin
+CC = "$(CC_PATH)/lcc64"
 
-# C Compiler: GNU ARM C Compiler
-CC_PATH = $(MW_GNU_ARM_TOOLS_PATH)
-CC = "$(CC_PATH)/arm-none-eabi-gcc"
+# Linker: Lcc-win64 Linker
+LD_PATH = $(LCC_ROOT)/bin
+LD = "$(LD_PATH)/lcclnk64"
 
-# Linker: GNU ARM Linker
-LD_PATH = $(MW_GNU_ARM_TOOLS_PATH)
-LD = "$(LD_PATH)/arm-none-eabi-g++"
-
-# C++ Compiler: GNU ARM C++ Compiler
-CPP_PATH = $(MW_GNU_ARM_TOOLS_PATH)
-CPP = "$(CPP_PATH)/arm-none-eabi-g++"
-
-# C++ Linker: GNU ARM C++ Linker
-CPP_LD_PATH = $(MW_GNU_ARM_TOOLS_PATH)
-CPP_LD = "$(CPP_LD_PATH)/arm-none-eabi-g++"
-
-# Archiver: GNU ARM Archiver
-AR_PATH = $(MW_GNU_ARM_TOOLS_PATH)
-AR = "$(AR_PATH)/arm-none-eabi-ar"
+# Archiver: Lcc-win64 Archiver
+AR_PATH = $(LCC_ROOT)/bin
+AR = "$(AR_PATH)/lcclib64"
 
 # MEX Tool: MEX Tool
 MEX_PATH = $(MATLAB_ARCH_BIN)
 MEX = "$(MEX_PATH)/mex"
-
-# Binary Converter: Binary Converter
-OBJCOPYPATH = $(MW_GNU_ARM_TOOLS_PATH)
-OBJCOPY = "$(OBJCOPYPATH)/arm-none-eabi-objcopy"
-
-# Hex Converter: Hex Converter
-OBJCOPYPATH = $(MW_GNU_ARM_TOOLS_PATH)
-OBJCOPY = "$(OBJCOPYPATH)/arm-none-eabi-objcopy"
-
-# Executable Size: Executable Size
-EXESIZEPATH = $(MW_GNU_ARM_TOOLS_PATH)
-EXESIZE = "$(EXESIZEPATH)/arm-none-eabi-size"
 
 # Download: Download
 DOWNLOAD =
@@ -134,20 +100,14 @@ MAKE = "$(MAKE_PATH)/gmake"
 # Directives/Utilities
 #-------------------------
 
-ASDEBUG             = -g
-AS_OUTPUT_FLAG      = -o
 CDEBUG              = -g
-C_OUTPUT_FLAG       = -o
-LDDEBUG             = -g
-OUTPUT_FLAG         = -o
-CPPDEBUG            = -g
-CPP_OUTPUT_FLAG     = -o
-CPPLDDEBUG          = -g
+C_OUTPUT_FLAG       = -Fo
+LDDEBUG             =
 OUTPUT_FLAG         = -o
 ARDEBUG             =
-STATICLIB_OUTPUT_FLAG =
+STATICLIB_OUTPUT_FLAG = /out:
 MEX_DEBUG           = -g
-RM                  = @del /f/q
+RM                  = @del /F
 ECHO                = @echo
 MV                  = @move
 RUN                 =
@@ -156,43 +116,17 @@ RUN                 =
 # "Faster Builds" Build Configuration
 #----------------------------------------
 
-ARFLAGS              = ruvs
-ASFLAGS              = -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
-                       -Wall \
-                       -x assembler-with-cpp \
-                       $(ASFLAGS_ADDITIONAL) \
-                       $(DEFINES) \
-                       $(INCLUDES) \
-                       -c
-OBJCOPYFLAGS_BIN     = -O binary $(PRODUCT) $(PRODUCT_BIN)
-CFLAGS               = $(FDATASECTIONS_FLG) \
-                       -Wall \
-                       -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
-                       -c \
-                       -O0
-CPPFLAGS             = -std=c++98 \
-                       -fno-rtti \
-                       -fno-exceptions \
-                       $(FDATASECTIONS_FLG) \
-                       -Wall \
-                       -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
-                       -c \
-                       -O0
-CPP_LDFLAGS          = -Wl,--gc-sections \
-                       -Wl,-Map="$(PRODUCT_NAME).map"
-CPP_SHAREDLIB_LDFLAGS  =
+ARFLAGS              =
+CFLAGS               = -c -w -noregistrylookup -nodeclspec -I$(LCC_ROOT)/include64
 DOWNLOAD_FLAGS       =
-EXESIZE_FLAGS        = $(PRODUCT)
 EXECUTE_FLAGS        =
-OBJCOPYFLAGS_HEX     = -O ihex $(PRODUCT) $(PRODUCT_HEX)
-LDFLAGS              = -Wl,--gc-sections \
-                       -Wl,-Map="$(PRODUCT_NAME).map"
+LDFLAGS              = -s -L$(LCC_LIB) $(LDFLAGS_ADDITIONAL)
 MEX_CPPFLAGS         =
 MEX_CPPLDFLAGS       =
 MEX_CFLAGS           =
 MEX_LDFLAGS          =
 MAKE_FLAGS           = -f $(MAKEFILE)
-SHAREDLIB_LDFLAGS    =
+SHAREDLIB_LDFLAGS    = -dll -entry LibMain -s -L$(LCC_LIB) $(LDFLAGS_ADDITIONAL) $(DEF_FILE)
 
 
 
@@ -200,7 +134,7 @@ SHAREDLIB_LDFLAGS    =
 ## OUTPUT INFO
 ###########################################################################
 
-PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)/Accel.elf
+PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)/Accel.exe
 PRODUCT_TYPE = "executable"
 BUILD_TYPE = "Top-Level Standalone Executable"
 
@@ -208,7 +142,7 @@ BUILD_TYPE = "Top-Level Standalone Executable"
 ## INCLUDE PATHS
 ###########################################################################
 
-INCLUDES_BUILDINFO = 
+INCLUDES_BUILDINFO = -I$(START_DIR) -I$(START_DIR)/Accel_ert_rtw -I$(MATLAB_ROOT)/extern/include -I$(MATLAB_ROOT)/simulink/include -I$(MATLAB_ROOT)/rtw/c/src -I$(MATLAB_ROOT)/rtw/c/src/ext_mode/common -I$(MATLAB_ROOT)/rtw/c/ert
 
 INCLUDES = $(INCLUDES_BUILDINFO)
 
@@ -216,14 +150,12 @@ INCLUDES = $(INCLUDES_BUILDINFO)
 ## DEFINES
 ###########################################################################
 
-DEFINES_ = -DMODEL=Accel -DNUMST=1 -DNCSTATES=0 -DHAVESTDIO -DMODEL_HAS_DYNAMICALLY_LOADED_SFCNS=0 -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0 -DTID01EQ=0 -DTERMFCN=1 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DINTEGER_CODE=0 -DMT=0 -DUSE_STDPERIPH_DRIVER -DUSE_STM32F4_DISCOVERY -DSTM32F4XX -DARM_MATH_CM4=1 -D__FPU_PRESENT=1 -D__FPU_USED=1U -DHSE_VALUE=8000000 -DNULL=0 -D__START=_start -DEXIT_FAILURE=1 -DEXTMODE_DISABLEPRINTF -DEXTMODE_DISABLETESTING -DEXTMODE_DISABLE_ARGS_PROCESSING=1 -DSTACK_SIZE=64 -D__MW_TARGET_USE_HARDWARE_RESOURCES_H__ -DRT
 DEFINES_BUILD_ARGS = -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0 -DTERMFCN=1 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DINTEGER_CODE=0 -DMT=0
 DEFINES_CUSTOM = 
 DEFINES_IMPLIED = -DTID01EQ=0
-DEFINES_SKIPFORSIL = -DUSE_STDPERIPH_DRIVER -DUSE_STM32F4_DISCOVERY -DSTM32F4XX -DARM_MATH_CM4=1 -D__FPU_PRESENT=1 -D__FPU_USED=1U -DHSE_VALUE=8000000 -DNULL=0 -D__START=_start -DEXIT_FAILURE=1 -DEXTMODE_DISABLEPRINTF -DEXTMODE_DISABLETESTING -DEXTMODE_DISABLE_ARGS_PROCESSING=1 -DSTACK_SIZE=64 -DRT
 DEFINES_STANDARD = -DMODEL=Accel -DNUMST=1 -DNCSTATES=0 -DHAVESTDIO -DMODEL_HAS_DYNAMICALLY_LOADED_SFCNS=0
 
-DEFINES = $(DEFINES_) $(DEFINES_BUILD_ARGS) $(DEFINES_CUSTOM) $(DEFINES_IMPLIED) $(DEFINES_SKIPFORSIL) $(DEFINES_STANDARD)
+DEFINES = $(DEFINES_BUILD_ARGS) $(DEFINES_CUSTOM) $(DEFINES_IMPLIED) $(DEFINES_STANDARD)
 
 ###########################################################################
 ## SOURCE FILES
@@ -231,7 +163,7 @@ DEFINES = $(DEFINES_) $(DEFINES_BUILD_ARGS) $(DEFINES_CUSTOM) $(DEFINES_IMPLIED)
 
 SRCS = $(START_DIR)/Accel_ert_rtw/Accel.c $(START_DIR)/Accel_ert_rtw/Accel_data.c $(START_DIR)/Accel_ert_rtw/rtGetInf.c $(START_DIR)/Accel_ert_rtw/rtGetNaN.c $(START_DIR)/Accel_ert_rtw/rt_nonfinite.c
 
-MAIN_SRC = ert_main.c
+MAIN_SRC = $(START_DIR)/Accel_ert_rtw/ert_main.c
 
 ALL_SRCS = $(SRCS) $(MAIN_SRC)
 
@@ -239,9 +171,9 @@ ALL_SRCS = $(SRCS) $(MAIN_SRC)
 ## OBJECTS
 ###########################################################################
 
-OBJS = Accel.o Accel_data.o rtGetInf.o rtGetNaN.o rt_nonfinite.o
+OBJS = Accel.obj Accel_data.obj rtGetInf.obj rtGetNaN.obj rt_nonfinite.obj
 
-MAIN_OBJ = ert_main.o
+MAIN_OBJ = ert_main.obj
 
 ALL_OBJS = $(OBJS) $(MAIN_OBJ)
 
@@ -271,96 +203,22 @@ SYSTEM_LIBS =
 # C Compiler
 #---------------
 
-CFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mlittle-endian -mthumb-interwork -mfpu=fpv4-sp-d16 -mfloat-abi=hard -include stm32f4discovery_wrapper.h
-CFLAGS_BASIC = $(DEFINES) $(INCLUDES) @$(COMPILER_COMMAND_FILE)
+CFLAGS_BASIC = $(DEFINES) $(INCLUDES)
 
-CFLAGS += $(CFLAGS_SKIPFORSIL) $(CFLAGS_BASIC)
-
-#-----------------
-# C++ Compiler
-#-----------------
-
-CPPFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mlittle-endian -mthumb-interwork -mfpu=fpv4-sp-d16 -mfloat-abi=hard -include stm32f4discovery_wrapper.h
-CPPFLAGS_BASIC = $(DEFINES) $(INCLUDES) @$(COMPILER_COMMAND_FILE)
-
-CPPFLAGS += $(CPPFLAGS_SKIPFORSIL) $(CPPFLAGS_BASIC)
-
-#---------------
-# C++ Linker
-#---------------
-
-CPP_LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mlittle-endian -mthumb-interwork -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nano.specs   -T "C:\ProgramData\MATLAB\SupportPackages\R2019b\toolbox\target\supportpackages\stm32f4discovery\src\arm-gcc-link.ld"
-
-CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
-
-#------------------------------
-# C++ Shared Library Linker
-#------------------------------
-
-CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mlittle-endian -mthumb-interwork -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nano.specs   -T "C:\ProgramData\MATLAB\SupportPackages\R2019b\toolbox\target\supportpackages\stm32f4discovery\src\arm-gcc-link.ld"
-
-CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
-
-#-----------
-# Linker
-#-----------
-
-LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mlittle-endian -mthumb-interwork -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nano.specs   -T "C:\ProgramData\MATLAB\SupportPackages\R2019b\toolbox\target\supportpackages\stm32f4discovery\src\arm-gcc-link.ld"
-
-LDFLAGS += $(LDFLAGS_SKIPFORSIL)
-
-#---------------------
-# MEX C++ Compiler
-#---------------------
-
-MEX_CPP_Compiler_BASIC =  @$(COMPILER_COMMAND_FILE)
-
-MEX_CPPFLAGS += $(MEX_CPP_Compiler_BASIC)
-
-#-----------------
-# MEX Compiler
-#-----------------
-
-MEX_Compiler_BASIC =  @$(COMPILER_COMMAND_FILE)
-
-MEX_CFLAGS += $(MEX_Compiler_BASIC)
-
-#--------------------------
-# Shared Library Linker
-#--------------------------
-
-SHAREDLIB_LDFLAGS_SKIPFORSIL = -mcpu=cortex-m4 -mthumb -mlittle-endian -mthumb-interwork -mfpu=fpv4-sp-d16 -mfloat-abi=hard --specs=nano.specs   -T "C:\ProgramData\MATLAB\SupportPackages\R2019b\toolbox\target\supportpackages\stm32f4discovery\src\arm-gcc-link.ld"
-
-SHAREDLIB_LDFLAGS += $(SHAREDLIB_LDFLAGS_SKIPFORSIL)
+CFLAGS += $(CFLAGS_BASIC)
 
 ###########################################################################
 ## INLINED COMMANDS
 ###########################################################################
 
-
-ALL_DEPS:=$(patsubst %.o,%.dep,$(ALL_OBJS))
-all:
-
-ifndef DISABLE_GCC_FUNCTION_DATA_SECTIONS
-FDATASECTIONS_FLG := -ffunction-sections -fdata-sections
-endif
-
-
-
--include codertarget_assembly_flags.mk
--include ../codertarget_assembly_flags.mk
--include ../../codertarget_assembly_flags.mk
--include $(ALL_DEPS)
-
-
 ###########################################################################
 ## PHONY TARGETS
 ###########################################################################
 
-.PHONY : all build buildobj clean info prebuild postbuild download execute
+.PHONY : all build buildobj clean info prebuild download execute
 
 
-all : build postbuild
+all : build
 	@echo "### Successfully generated all binary outputs."
 
 
@@ -374,19 +232,7 @@ buildobj : prebuild $(OBJS) $(PREBUILT_OBJS)
 prebuild : 
 
 
-postbuild : $(PRODUCT)
-	@echo "### Invoking postbuild tool "Binary Converter" ..."
-	$(OBJCOPY) $(OBJCOPYFLAGS_BIN)
-	@echo "### Done invoking postbuild tool."
-	@echo "### Invoking postbuild tool "Hex Converter" ..."
-	$(OBJCOPY) $(OBJCOPYFLAGS_HEX)
-	@echo "### Done invoking postbuild tool."
-	@echo "### Invoking postbuild tool "Executable Size" ..."
-	$(EXESIZE) $(EXESIZE_FLAGS)
-	@echo "### Done invoking postbuild tool."
-
-
-download : postbuild
+download : $(PRODUCT)
 
 
 execute : download
@@ -405,7 +251,7 @@ execute : download
 
 $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MAIN_OBJ)
 	@echo "### Creating standalone executable "$(PRODUCT)" ..."
-	$(CPP_LD) $(CPP_LDFLAGS) -o $(PRODUCT) @$(CMD_FILE) $(SYSTEM_LIBS) $(TOOLCHAIN_LIBS)
+	$(LD) $(LDFLAGS) -o $(PRODUCT) @$(CMD_FILE) $(subst /,\,$(subst /,\,$(SYSTEM_LIBS))) $(subst /,\,$(subst /,\,$(TOOLCHAIN_LIBS)))
 	@echo "### Created: $(PRODUCT)"
 
 
@@ -417,199 +263,59 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MAIN_OBJ)
 # SOURCE-TO-OBJECT
 #---------------------
 
-%.o : %.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+%.obj : %.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : %.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
+%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : %.S
-	$(AS) $(ASFLAGS) -o "$@" "$<"
+%.obj : $(START_DIR)/%.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : %.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+%.obj : $(START_DIR)/Accel_ert_rtw/%.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : %.cc
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+%.obj : $(MATLAB_ROOT)/rtw/c/src/%.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : %.C
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+%.obj : $(MATLAB_ROOT)/simulink/src/%.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : %.cxx
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+Accel.obj : $(START_DIR)/Accel_ert_rtw/Accel.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(RELATIVE_PATH_TO_ANCHOR)/%.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+Accel_data.obj : $(START_DIR)/Accel_ert_rtw/Accel_data.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(RELATIVE_PATH_TO_ANCHOR)/%.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
+ert_main.obj : $(START_DIR)/Accel_ert_rtw/ert_main.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(RELATIVE_PATH_TO_ANCHOR)/%.S
-	$(AS) $(ASFLAGS) -o "$@" "$<"
+rtGetInf.obj : $(START_DIR)/Accel_ert_rtw/rtGetInf.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(RELATIVE_PATH_TO_ANCHOR)/%.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+rtGetNaN.obj : $(START_DIR)/Accel_ert_rtw/rtGetNaN.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(RELATIVE_PATH_TO_ANCHOR)/%.cc
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(RELATIVE_PATH_TO_ANCHOR)/%.C
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(RELATIVE_PATH_TO_ANCHOR)/%.cxx
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/%.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/%.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/%.S
-	$(AS) $(ASFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/%.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/%.cc
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/%.C
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/%.cxx
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/Accel_ert_rtw/%.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/Accel_ert_rtw/%.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/Accel_ert_rtw/%.S
-	$(AS) $(ASFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/Accel_ert_rtw/%.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/Accel_ert_rtw/%.cc
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/Accel_ert_rtw/%.C
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(START_DIR)/Accel_ert_rtw/%.cxx
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/rtw/c/src/%.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/rtw/c/src/%.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/rtw/c/src/%.S
-	$(AS) $(ASFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/rtw/c/src/%.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/rtw/c/src/%.cc
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/rtw/c/src/%.C
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/rtw/c/src/%.cxx
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/simulink/src/%.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/simulink/src/%.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/simulink/src/%.S
-	$(AS) $(ASFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/simulink/src/%.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/simulink/src/%.cc
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/simulink/src/%.C
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-%.o : $(MATLAB_ROOT)/simulink/src/%.cxx
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
-Accel.o : $(START_DIR)/Accel_ert_rtw/Accel.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-Accel_data.o : $(START_DIR)/Accel_ert_rtw/Accel_data.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-rtGetInf.o : $(START_DIR)/Accel_ert_rtw/rtGetInf.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-rtGetNaN.o : $(START_DIR)/Accel_ert_rtw/rtGetNaN.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-rt_nonfinite.o : $(START_DIR)/Accel_ert_rtw/rt_nonfinite.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+rt_nonfinite.obj : $(START_DIR)/Accel_ert_rtw/rt_nonfinite.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
 ###########################################################################
 ## DEPENDENCIES
 ###########################################################################
 
-$(ALL_OBJS) : rtw_proj.tmw $(COMPILER_COMMAND_FILE) $(MAKEFILE)
+$(ALL_OBJS) : rtw_proj.tmw $(MAKEFILE)
 
 
 ###########################################################################
@@ -628,21 +334,14 @@ info :
 	@echo "### MODELREF_LIBS = $(MODELREF_LIBS)"
 	@echo "### SYSTEM_LIBS = $(SYSTEM_LIBS)"
 	@echo "### TOOLCHAIN_LIBS = $(TOOLCHAIN_LIBS)"
-	@echo "### ASFLAGS = $(ASFLAGS)"
 	@echo "### CFLAGS = $(CFLAGS)"
 	@echo "### LDFLAGS = $(LDFLAGS)"
 	@echo "### SHAREDLIB_LDFLAGS = $(SHAREDLIB_LDFLAGS)"
-	@echo "### CPPFLAGS = $(CPPFLAGS)"
-	@echo "### CPP_LDFLAGS = $(CPP_LDFLAGS)"
-	@echo "### CPP_SHAREDLIB_LDFLAGS = $(CPP_SHAREDLIB_LDFLAGS)"
 	@echo "### ARFLAGS = $(ARFLAGS)"
 	@echo "### MEX_CFLAGS = $(MEX_CFLAGS)"
 	@echo "### MEX_CPPFLAGS = $(MEX_CPPFLAGS)"
 	@echo "### MEX_LDFLAGS = $(MEX_LDFLAGS)"
 	@echo "### MEX_CPPLDFLAGS = $(MEX_CPPLDFLAGS)"
-	@echo "### OBJCOPYFLAGS_BIN = $(OBJCOPYFLAGS_BIN)"
-	@echo "### OBJCOPYFLAGS_HEX = $(OBJCOPYFLAGS_HEX)"
-	@echo "### EXESIZE_FLAGS = $(EXESIZE_FLAGS)"
 	@echo "### DOWNLOAD_FLAGS = $(DOWNLOAD_FLAGS)"
 	@echo "### EXECUTE_FLAGS = $(EXECUTE_FLAGS)"
 	@echo "### MAKE_FLAGS = $(MAKE_FLAGS)"
@@ -652,7 +351,6 @@ clean :
 	$(ECHO) "### Deleting all derived files..."
 	$(RM) $(subst /,\,$(PRODUCT))
 	$(RM) $(subst /,\,$(ALL_OBJS))
-	$(RM) *.dep
 	$(ECHO) "### Deleted all derived files."
 
 

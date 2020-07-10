@@ -1,3 +1,5 @@
+set MATLAB=C:\Program Files\MATLAB\R2019b
+
 cd .
 
 if "%1"=="" ("C:\PROGRA~1\MATLAB\R2019b\bin\win64\gmake"  -f Accel.mk all) else ("C:\PROGRA~1\MATLAB\R2019b\bin\win64\gmake"  -f Accel.mk %1)

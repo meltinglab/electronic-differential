@@ -9,10 +9,10 @@
  *
  * Model version                  : 1.101
  * Simulink Coder version         : 9.2 (R2019b) 18-Jul-2019
- * C/C++ source code generated on : Mon Jul  6 22:04:55 2020
+ * C/C++ source code generated on : Tue Jul  7 17:05:20 2020
  *
  * Target selection: ert.tlc
- * Embedded hardware selection: ARM Compatible->ARM Cortex
+ * Embedded hardware selection: Intel->x86-64 (Windows64)
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
@@ -21,9 +21,9 @@
 #define RTW_HEADER_Accel_private_h_
 #include "rtwtypes.h"
 
-extern real_T rt_powd_snf(real_T u0, real_T u1);
 extern real_T rt_hypotd_snf(real_T u0, real_T u1);
 extern real_T rt_atan2d_snf(real_T u0, real_T u1);
+extern real_T rt_powd_snf(real_T u0, real_T u1);
 extern real_T look1_binlcapw(real_T u0, const real_T bp0[], const real_T table[],
   uint32_T maxIndex);
 
