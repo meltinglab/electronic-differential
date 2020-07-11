@@ -8,12 +8,6 @@
 % variable introduced by this file and avoid any override.
 %
 %
-% CURRENT VARIABLES you should not override:
-%
-%   wheel_base      [m]:        distance between front and rear axles
-%   wheel_radius    [m]:        radius of a single wheel
-%
-%
 %
 % USAGE:
 % ----------------
@@ -58,9 +52,6 @@
 % variable, and an inline comment speficying the unit of measure; in
 % absence of different agreements, you shall use SI units of measure; you
 % may set a variable to NaN and ask vehicle owner to properly set it
-%
-% Finally, you must add the variable name, together with a short
-% description, to the help of the file, under the section CURRENT VARIABLES
 %
 % When you add a new variable, you must inform the owner of the vehicle
 % model, who must adjust the model with the newly added parameter
@@ -177,7 +168,7 @@ Tc = 0.02
 % Maximum torque, torque_max [Nm]:
 torque_max = 280
 % Maximum power, power_max [W]:
-power_max = 80000
+power_max = 30000
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % control  
