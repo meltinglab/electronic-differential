@@ -26,7 +26,7 @@ The model’s blocks and subsystems are organized as depicted below.
  The control develop from scratch by our team is located in Control Block.
 
 
-## 1. System requirements
+## 2. System requirements
 
 The design has all been performed on Matlab/Simulink environment.
 In order to interface with the developed model, the following software modules are required:
@@ -44,7 +44,7 @@ Finally, the generated code has been deployed on a target board, requiring the f
 
 
 
-## 2. Project organization
+## 3. Project organization
 
 In software development, the V-model represents a development process that may be considered an extension of the waterfall model. Instead of moving down in a linear way, the process steps are bent upwards after the coding phase, to form the typical V shape. The V-Model demonstrates the relationships between each phase of the development process and its associated phase of testing and validation. The horizontal and vertical axes represent time, or project completeness, (left-to-right) and level of abstraction (coarsest-grain abstraction uppermost), respectively.
  
@@ -63,7 +63,7 @@ The team organization is detailed describe in [Overall report](https://github.co
 
 
 
-## 3. Related documents
+## 4. Related documents
 
 All the development and validation files, together with the related reports detailing the design procedures, are stored on a repository on GitHub, which can be found at the url:
 https://github.com/meltinglab/electronic-differential
