@@ -13,7 +13,7 @@ The system, that combines the actions of both a mechanical differential and an E
 
 The model’s blocks and subsystems are organized as depicted below.
 
-![Image of overall model](/reports/images/overall_model.jpg)
+![Image of overall model](https://github.com/meltinglab/electronic-differential/blob/master/reports/images/overall_model.png)
 
 * The refence generator block is a block that generates the reference environment for the simulation of the car model; in this block it is possible to set the kind of the maneuver and related conditions. 
 * The driver command is a block that, given as input the feedback of vehicle dynamics and the reference of the maneuver, provides as output the ratio of the throttle and brake pedals and the steering angle, simulating the behavior of a driver in a predictive way.
@@ -48,7 +48,7 @@ Finally, the generated code has been deployed on a target board, requiring the f
 
 In software development, the V-model represents a development process that may be considered an extension of the waterfall model. Instead of moving down in a linear way, the process steps are bent upwards after the coding phase, to form the typical V shape. The V-Model demonstrates the relationships between each phase of the development process and its associated phase of testing and validation. The horizontal and vertical axes represent time, or project completeness, (left-to-right) and level of abstraction (coarsest-grain abstraction uppermost), respectively.
  
-![Image of V-Model](/reports/images/V_model.jpg)
+![Image of V-Model](https://github.com/meltinglab/electronic-differential/blob/master/reports/images/V_model.jpg)
  
 The approach followed throughout all the development of the controller system described in this dissertation is well depicted by the above picture.
 
